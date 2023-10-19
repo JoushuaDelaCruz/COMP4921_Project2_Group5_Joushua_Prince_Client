@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import PostCard from "./Components/PostCard";
-import NavBar from "./Components/NavBar";
+import Navbar from "./Components/Navbar";
 
 const Home = () => {
   const [posts, setPosts] = useState([]);
@@ -19,7 +19,7 @@ const Home = () => {
   }, []);
   return (
     <>
-      <NavBar />
+      <Navbar />
       <main className="background flex flex-col items-center content-center pt-6 gap-4">
         <section className="w-1/2 bg-white h-16 flex align-middle content-center flex-wrap p-2 gap-2 rounded-md">
           <img
