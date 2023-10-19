@@ -1,7 +1,7 @@
 import React from "react";
 import { Link, Outlet } from "react-router-dom";
 
-const Navbar = () => {
+const NavBar = () => {
   return (
     <nav className="bg-white block w-full">
       <div className="max-w-screen px-2 sm:px-6 lg:px-8">
@@ -69,4 +69,4 @@ const Navbar = () => {
   );
 };
 
-export default Navbar;
+export default NavBar;
