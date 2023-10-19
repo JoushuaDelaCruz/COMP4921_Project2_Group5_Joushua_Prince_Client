@@ -6,16 +6,16 @@ import Navbar from "./Components/Navbar";
 const Home = () => {
   const [posts, setPosts] = useState([]);
   useEffect(() => {
-    axios
-      .get(import.meta.env.VITE_API + "home", {
+    const getPosts = async () => {
+      const response = await axios.get(import.meta.env.VITE_API + "post", {
         mode: "cors",
         headers: {
           "Content-Type": "application/json",
         },
-      })
-      .then((res) => {
-        setPosts(res.data);
       });
+      setPosts(response.data);
+    };
+    getPosts();
   }, []);
   return (
     <>
