@@ -1,0 +1,42 @@
+[
+    {
+        "id": 0,
+        "msg": "Please enter a valid username."
+    },
+    {
+        "id": 1,
+        "msg": "Please enter a valid email."
+    },
+    {
+        "id": 2,
+        "msg": "Password must be at least 10 characters long."
+    },
+    {
+        "id": 3,
+        "msg": "Password must contain at least one lowercase letter."
+    },
+    {
+        "id": 4,
+        "msg": "Password must contain at least one uppercase letter."
+    },
+    {
+        "id": 5,
+        "msg": "Password must contain at least one number."
+    },
+    {
+        "id": 6,
+        "msg": "Password must contain at least one special character."
+    },
+    {
+        "id": 7,
+        "msg": "Credentials are invalid. Please try again."
+    },
+    {
+        "id": 8,
+        "msg": "Email already exists."
+    },
+    {
+        "id": 9,
+        "msg": "Username already exists."
+    }
+]
