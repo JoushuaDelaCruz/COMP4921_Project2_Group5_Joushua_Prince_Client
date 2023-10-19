@@ -3,7 +3,9 @@ import { AdvancedImage } from "@cloudinary/react";
 import { Cloudinary } from "@cloudinary/url-gen";
 
 const PostCard = ({ post }) => {
-  const cld = new Cloudinary({ cloud: { cloudName: "dkvsygg1l" } });
+  const cld = new Cloudinary({
+    cloud: { cloudName: import.meta.env.VITE_CLOUD_NAME },
+  });
   const myImage = cld.image(post.profile_img);
   return (
     <div className="flex w-full bg-white h-fit rounded">
