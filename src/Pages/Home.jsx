@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import NavBar from "./Components/NavBar";
 import axios from "axios";
 import PostCard from "./Components/PostCard";
+import NavBar from "./Components/NavBar";
 
 const Home = () => {
   const [posts, setPosts] = useState([]);
