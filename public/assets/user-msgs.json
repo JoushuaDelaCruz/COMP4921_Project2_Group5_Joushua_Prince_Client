@@ -1,42 +1,52 @@
 [
     {
         "id": 0,
-        "msg": "Please enter a valid username."
+        "msg": "Please enter a valid username.",
+        "tagId": "username"
     },
     {
         "id": 1,
-        "msg": "Please enter a valid email."
+        "msg": "Please enter a valid email.",
+        "tagId": "email"
     },
     {
         "id": 2,
-        "msg": "Password must be at least 10 characters long."
+        "msg": "Password must be at least 10 characters long.",
+        "tagId": "password"
     },
     {
         "id": 3,
-        "msg": "Password must contain at least one lowercase letter."
+        "msg": "Password must contain at least one lowercase letter.",
+        "tagId": "password"
     },
     {
         "id": 4,
-        "msg": "Password must contain at least one uppercase letter."
+        "msg": "Password must contain at least one uppercase letter.",
+        "tagId": "password"
     },
     {
         "id": 5,
-        "msg": "Password must contain at least one number."
+        "msg": "Password must contain at least one number.",
+        "tagId": "password"
     },
     {
         "id": 6,
-        "msg": "Password must contain at least one special character."
+        "msg": "Password must contain at least one special character.",
+        "tagId": "password"
     },
     {
         "id": 7,
-        "msg": "Credentials are invalid. Please try again."
+        "msg": "Credentials are invalid. Please try again.",
+        "tagId": "credentials"
     },
     {
         "id": 8,
-        "msg": "Email already exists."
+        "msg": "Email already exists.",
+        "tagId": "email"
     },
     {
         "id": 9,
-        "msg": "Username already exists."
+        "msg": "Username already exists.",
+        "tagId": "username"
     }
 ]
