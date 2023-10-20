@@ -1,19 +1,16 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import PostCard from "./Components/PostCard";
 import Navbar from "./Components/Navbar";
+import Request from "./models/ServerRequest";
 
 const Home = () => {
+  const request = new Request();
   const [posts, setPosts] = useState([]);
   useEffect(() => {
     const getPosts = async () => {
-      const response = await axios.get(import.meta.env.VITE_API + "post", {
-        mode: "cors",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      setPosts(response.data);
+      const url = import.meta.env.VITE_API + "post";
+      const data = await request.getReq(url);
+      setPosts(data);
     };
     getPosts();
   }, []);
