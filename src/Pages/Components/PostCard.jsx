@@ -13,7 +13,7 @@ const PostCard = ({ post }) => {
         <button className="mt-3 text-green-400">
           <i className="fa-regular fa-circle-up fa-2xl"></i>
         </button>
-        <span className="font-semibold text-sm"> {post.num_votes} </span>
+        <span className="font-semibold text-sm"> {post.num_votes || 0} </span>
         <button className="text-green-400">
           <i className="fa-regular fa-circle-down fa-2xl"></i>
         </button>
@@ -44,7 +44,10 @@ const PostCard = ({ post }) => {
             className="flex items-center gap-1 p-2 ml-1 mt-1 rounded-sm text-gray-400 hover:bg-gray-100"
           >
             <i className="fa-regular fa-comment fa-lg"></i>
-            <span className="text-xs font-bold"> 0 Comments </span>
+            <span className="text-xs font-bold">
+              {" "}
+              {post.num_comments} Comments{" "}
+            </span>
           </a>
           <button className="flex items-center gap-2 p-2 mt-1 rounded-sm text-gray-400 hover:bg-gray-100">
             <i className="fa-regular fa-bookmark fa-lg"></i>
