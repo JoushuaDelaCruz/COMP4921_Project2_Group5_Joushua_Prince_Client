@@ -1,134 +1,50 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import Authenticator from "./models/SignUpAuthenticator";
+import Request from "./models/ServerRequest";
 
 const SignUp = () => {
-  const [errorMsgs, setErrorMsgs] = useState([]);
+  const request = new Request();
+  const [auth, setAuth] = useState(null);
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   useEffect(() => {
-    const getErrorMsgs = async () => {
+    const createAuthenticator = async () => {
       const response = await fetch("/assets/user-msgs.json");
       const data = await response.json();
-      setErrorMsgs(data);
+      const authenticator = new Authenticator(data);
+      setAuth(authenticator);
     };
-    getErrorMsgs();
+    createAuthenticator();
   }, []);
 
-  const getElement = (id) => document.getElementById(id);
-
-  const getErrorMsg = (id) => {
-    return errorMsgs[id]["msg"];
+  const isUsernameExistInDB = async (username) => {
+    const url = import.meta.env.VITE_API + "user/isUsernameExist";
+    const response = await request.postReq(url, username);
+    return response;
   };
 
-  const _credentialInvalid = (id, errId) => {
-    const invalidElement = getElement(`is-${id}-invalid`);
-    const inputContainer = getElement(id);
-    inputContainer.classList.remove("ring-gray-300");
-    inputContainer.classList.add("ring-red-500");
-    invalidElement.classList.remove("hidden");
-    invalidElement.innerText = getErrorMsg(errId);
-    return false;
-  };
-
-  const _credentialValid = (id) => {
-    const invalidElement = getElement(`is-${id}-invalid`);
-    const inputContainer = getElement(id);
-    inputContainer.classList.remove("ring-gray-300");
-    inputContainer.classList.remove("ring-red-500");
-    inputContainer.classList.add("ring-green-500");
-    invalidElement.classList.add("hidden");
-    return true;
-  };
-
-  const validateEmail = async () => {
-    if (!email) {
-      return _credentialInvalid("email", 1);
-    }
-    const response = await axios.post(
-      import.meta.env.VITE_API + "user/isEmailExist",
-      {
-        mode: "cors",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        data: {
-          email: email,
-        },
-      }
-    );
-    if (response.data) {
-      return _credentialInvalid("email", 8);
-    } else {
-      return _credentialValid("email");
-    }
-  };
-
-  const validateUsername = async () => {
-    if (!username) {
-      _credentialInvalid("username", 0);
-      return _credentialInvalid("username", 0);
-    }
-    const response = await axios.post(
-      import.meta.env.VITE_API + "user/isUsernameExist",
-      {
-        mode: "cors",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        data: {
-          username: username,
-        },
-      }
-    );
-    if (response.data) {
-      return _credentialInvalid("username", 9);
-    } else {
-      return _credentialValid("username");
-    }
-  };
-
-  const validatePassword = () => {
-    if (password.length < 10) {
-      return _credentialInvalid("password", 2);
-    }
-    if (!password.match(/[a-z]/)) {
-      return _credentialInvalid("password", 3);
-    }
-    if (!password.match(/[A-Z]/)) {
-      return _credentialInvalid("password", 4);
-    }
-    if (!password.match(/[0-9]/)) {
-      return _credentialInvalid("password", 5);
-    }
-    if (!password.match(/[^a-zA-Z0-9]/)) {
-      return _credentialInvalid("password", 6);
-    }
-    return _credentialValid("password");
+  const isEmailExistInDB = async (email) => {
+    const url = import.meta.env.VITE_API + "user/isEmailExist";
+    const response = await request.postReq(url, email);
+    return response;
   };
 
   const validateCredentials = async () => {
-    const isUsernameValid = validateUsername();
-    const isEmailValid = validateEmail();
-    const isPasswordValid = validatePassword();
-    if (isUsernameValid && isEmailValid && isPasswordValid) {
-      const data = {
-        username: username,
-        email: email,
-        password: password,
-      };
-      const response = await axios.post(
-        import.meta.env.VITE_API + "user/create",
-        data,
-        {
-          mode: "cors",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-      if (response.data) {
+    const usernameBundle = { input: username, isExistReq: isUsernameExistInDB };
+    const emailBundle = { input: email, isExistReq: isEmailExistInDB };
+    const isCredentialValid = await auth.validateSignUp(
+      usernameBundle,
+      emailBundle,
+      password
+    );
+    if (isCredentialValid) {
+      const url = import.meta.env.VITE_API + "user/create";
+      const data = { username: username, email: email, password: password };
+      const isCreateUserSuccess = await request.postReq(url, data);
+      if (isCreateUserSuccess) {
         window.location.href = "/login";
       } else {
         alert("Something went wrong");
@@ -234,7 +150,7 @@ const SignUp = () => {
               Already a chatter?
               <a
                 href="./login"
-                className="font-semibold leading-6 text-cyan-600 hover:text-cyan-500"
+                className="font-semibold leading-6 text-cyan-600 hover:text-cyan-500 pl-1"
               >
                 Log In!
               </a>
