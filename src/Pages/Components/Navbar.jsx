@@ -1,7 +1,43 @@
 import React from "react";
 import { Link, Outlet } from "react-router-dom";
+import { AdvancedImage } from "@cloudinary/react";
 
-const Navbar = () => {
+const Navbar = ({ user, image }) => {
+  const RightSidebar = () => {
+    if (user) {
+      return (
+        <a
+          href="#"
+          className="flex flex-row gap-2 justify-center items-center border-2 border-slate-100 rounded-sm h-full px-1"
+        >
+          <AdvancedImage
+            cldImg={image}
+            className="h-10 w-12 rounded-md object-cover"
+          />
+          <span className="text-xs font-medium text-slate-700 w-12 min-w-18 text-center">
+            {user.username}
+          </span>
+        </a>
+      );
+    } else {
+      return (
+        <>
+          <Link
+            to="/signUp"
+            className="flex flex-row gap-2 justify-center items-center h-fit px-4 py-3 rounded-full hover:bg-gray-100"
+          >
+            <span className="text-sm text-slate-700 font-medium">Sign Up</span>
+          </Link>
+          <Link
+            to="/login"
+            className="flex flex-row gap-2 justify-center items-center h-fit px-4 py-3 ring-1 ml-2 ring-cyan-600 rounded-full hover:bg-gray-100"
+          >
+            <span className="text-sm font-semibold text-slate-700">Login</span>
+          </Link>
+        </>
+      );
+    }
+  };
   return (
     <nav className="bg-white block w-full">
       <div className="max-w-screen px-2 sm:px-6 lg:px-8">
@@ -38,28 +74,18 @@ const Navbar = () => {
                 placeholder="Search ChatBook"
               />
             </div>
-            <Link
-              to="/post"
-              className="flex items-center p-3 ml-4 justify-center content-center bg-gray-100 text-gray-400 hover:ring-1 hover:ring-black"
-            >
-              <i className="fa-solid fa-plus fa-lg"></i>
-            </Link>
-          </div>
-          <div className="absolute inset-y-0 right-0 flex items-center sm:static sm:inset-auto ml-1 sm:pr-0 h-full">
-            <div className="relative ml-1 h-full py-1">
-              <a
-                href="#"
-                className="flex flex-row gap-2 justify-center items-center border-2 border-slate-100 rounded-sm h-full px-2"
+            {user && (
+              <Link
+                to="/post"
+                className="flex items-center p-3 ml-4 justify-center content-center bg-gray-100 text-gray-400 hover:ring-1 hover:ring-black"
               >
-                <img
-                  className="h-10 w-10 rounded-md object-cover"
-                  src="./images/profile.jpg"
-                  alt=""
-                />
-                <span className="text-sm font-semibold text-slate-700">
-                  Joushua Dela Cruz
-                </span>
-              </a>
+                <i className="fa-solid fa-plus fa-lg"></i>
+              </Link>
+            )}
+          </div>
+          <div className="aflex items-center sm:inset-auto ml-1 sm:pr-0 h-full">
+            <div className="flex ml-1 h-full py-1 gap-31 items-center">
+              {RightSidebar()}
             </div>
           </div>
         </div>
