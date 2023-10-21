@@ -1,10 +1,14 @@
 import React, { useEffect, useState } from "react";
 import Authenticator from "./models/LogInAuthenticator";
+import Request from "./models/ServerRequest";
+import { useCookies } from "react-cookie";
 
 const LogIn = () => {
+  const request = new Request();
+  const [cookies, setCookie] = useCookies(["session"]);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [Authenticate, setAuthenticate] = useState(null);
+  const [authenticate, setAuthenticate] = useState(null);
 
   useEffect(() => {
     const getAuthenticate = async () => {
@@ -16,9 +20,28 @@ const LogIn = () => {
     getAuthenticate();
   }, []);
 
-  const validateCredentials = () => {
-    const validCredentials = Authenticate.validateLogIn(email, password);
-    
+  const _createCookie = (session) => {
+    if (session) {
+      const expireTime = 60 * 60 * 1000;
+      setCookie("session", session, {
+        path: "/",
+        maxAge: expireTime,
+        sameSite: "strict",
+      });
+      window.location.href = "/";
+    } else {
+      authenticate.invalidLogIn();
+    }
+  };
+
+  const validateCredentials = async () => {
+    const validCredentials = authenticate.validateLogIn(email, password);
+    if (validCredentials) {
+      const url = import.meta.env.VITE_API + "user/login";
+      const data = { email: email, password: password };
+      const response = await request.postReq(url, data);
+      _createCookie(response);
+    }
   };
 
   return (
