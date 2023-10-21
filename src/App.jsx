@@ -1,5 +1,11 @@
-import React, { useEffect } from "react";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import React from "react";
+import {
+  Route,
+  createBrowserRouter,
+  RouterProvider,
+  createRoutesFromElements,
+  redirect,
+} from "react-router-dom";
 import Home from "./Pages/Home";
 import Post from "./Pages/Post";
 import LogIn from "./Pages/LogIn";
@@ -9,7 +15,7 @@ import Request from "./Pages/models/ServerRequest";
 
 const App = () => {
   const request = new Request();
-  const [cookies] = useCookies(["session"]);
+  const [cookies, , removeCookie] = useCookies(["session"]);
 
   const isCookieValid = async () => {
     if (cookies.session) {
@@ -17,31 +23,55 @@ const App = () => {
       const authenticated = await request.postReq(url, cookies.session);
       return authenticated;
     }
+    removeCookie("session");
     return false;
   };
 
-  return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" exact element={<Home />} />
+  const routers = createBrowserRouter(
+    createRoutesFromElements(
+      <Route path="/">
+        <Route index element={<Home />} />
         <Route
           path="/post"
+          loader={async () => {
+            const cookieStatus = await isCookieValid();
+            if (!cookieStatus) {
+              return redirect("/");
+            }
+            return null;
+          }}
           exact
-          element={isCookieValid ? <Navigate to="/" replace /> : <Post />}
+          element={<Post />}
         />
         <Route
           path="/logIn"
+          loader={async () => {
+            const cookieStatus = await isCookieValid();
+            if (cookieStatus) {
+              return redirect("/");
+            }
+            return null;
+          }}
           exact
-          element={isCookieValid ? <LogIn /> : <Navigate to="/" replace />}
+          element={<LogIn />}
         />
         <Route
           path="/signUp"
+          loader={async () => {
+            const cookieStatus = await isCookieValid();
+            if (cookieStatus) {
+              return redirect("/");
+            }
+            return null;
+          }}
           exact
-          element={isCookieValid ? <SignUp /> : <Navigate to="/" replace />}
+          element={<SignUp />}
         />
-      </Routes>
-    </BrowserRouter>
+      </Route>
+    )
   );
+
+  return <RouterProvider router={routers} />;
 };
 
 export default App;
