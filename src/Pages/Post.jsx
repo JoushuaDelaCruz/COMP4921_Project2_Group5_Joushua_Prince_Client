@@ -33,22 +33,28 @@ const Post = () => {
     getUser();
   }, []);
 
-  const submitBtn = () => {
-    const submitBtn = document.getElementById("post-btn");
-    if (title.length > 1) {
-      submitBtn.removeAttribute("disabled");
-      submitBtn.classList.remove("opacity-50");
-    } else {
-      submitBtn.setAttribute("disabled", true);
-      submitBtn.classList.add("opacity-50");
-    }
-  };
-
   const userWritesTitle = async (e) => {
     setTitle(e.target.value);
     setTitleCounter(e.target.value.length);
-    submitBtn();
   };
+
+  const submitPost = async () => {
+    const url = import.meta.env.VITE_API + "post/create";
+    const data = {
+      title: title,
+      content: content,
+      sessionID: cookies.session,
+    };
+    const response = await request.postReq(url, data);
+    console.log(response);
+    if (response) {
+      window.location.href = "/";
+    } else {
+      alert("Something went wrong. Please try again");
+      window.location.reload();
+    }
+  };
+
   return (
     <>
       <Navbar user={user} image={profileImg} />
@@ -77,7 +83,9 @@ const Post = () => {
               </div>
             </div>
             <TextareaAutosize
-              className="ring-gray-200 ring-1 rounded-sm py-1 px-2 resize-none overflow-hidden focus:ring-black"
+              className={
+                "ring-gray-200 ring-1 rounded-sm py-1 px-2 resize-none overflow-hidden focus:ring-black"
+              }
               minRows="12"
               id="content"
               placeholder="What's on your mind?"
@@ -89,10 +97,13 @@ const Post = () => {
             <div className="flex justify-end">
               <button
                 type="submit"
-                className="bg-green-500 text-white font-medium py-1 px-5 rounded opacity-50"
-                onClick={() => {}}
+                className={
+                  "bg-green-500 text-white font-medium py-1 px-5 rounded opacity-50" +
+                  (title ? " opacity-100" : " opacity-50")
+                }
+                onClick={submitPost}
                 id="post-btn"
-                disabled
+                disabled={!title}
               >
                 {" "}
                 Post{" "}
