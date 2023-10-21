@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+import { useCookies } from "react-cookie";
 import Authenticator from "./models/SignUpAuthenticator";
 import Request from "./models/ServerRequest";
 
@@ -9,14 +9,26 @@ const SignUp = () => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [cookies] = useCookies(["session"]);
 
   useEffect(() => {
+    const checkCookie = async () => {
+      if (cookies.session) {
+        const url = import.meta.env.VITE_API + "user/checkSession";
+        const authenticated = await request.postReq(url, cookies.session);
+        if (authenticated) {
+          window.location.href = "/";
+        }
+      }
+    };
+
     const createAuthenticator = async () => {
       const response = await fetch("/assets/user-msgs.json");
       const data = await response.json();
       const authenticator = new Authenticator(data);
       setAuth(authenticator);
     };
+    checkCookie();
     createAuthenticator();
   }, []);
 
