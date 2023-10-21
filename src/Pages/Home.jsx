@@ -7,8 +7,8 @@ import { AdvancedImage } from "@cloudinary/react";
 import { Cloudinary } from "@cloudinary/url-gen";
 
 const Home = () => {
-  const [posts, setPosts] = useState([]);
   const [user, setUser] = useState(null);
+  const [posts, setPosts] = useState([]);
   const [cookies, setCookie, removeCookie] = useCookies(["session"]);
   const [profileImg, setProfileImg] = useState("");
   const request = new Request();
