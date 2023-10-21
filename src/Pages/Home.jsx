@@ -2,10 +2,13 @@ import React, { useEffect, useState } from "react";
 import PostCard from "./Components/PostCard";
 import Navbar from "./Components/Navbar";
 import Request from "./models/ServerRequest";
+import { useCookies } from "react-cookie";
 
 const Home = () => {
   const request = new Request();
   const [posts, setPosts] = useState([]);
+  const [user, setUser] = useState({});
+  const [cookies, setCookie, removeCookie] = useCookies(["session"]);
   useEffect(() => {
     const getPosts = async () => {
       const url = import.meta.env.VITE_API + "post";
@@ -13,6 +16,7 @@ const Home = () => {
       setPosts(data);
     };
     getPosts();
+    console.log(cookies);
   }, []);
   return (
     <>
