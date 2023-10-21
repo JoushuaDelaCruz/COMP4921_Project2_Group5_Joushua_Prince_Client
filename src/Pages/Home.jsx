@@ -9,7 +9,7 @@ import { Cloudinary } from "@cloudinary/url-gen";
 const Home = () => {
   const [user, setUser] = useState(null);
   const [posts, setPosts] = useState([]);
-  const [cookies, setCookie, removeCookie] = useCookies(["session"]);
+  const [cookies, , removeCookie] = useCookies(["session"]);
   const [profileImg, setProfileImg] = useState("");
   const request = new Request();
   const cld = new Cloudinary({
