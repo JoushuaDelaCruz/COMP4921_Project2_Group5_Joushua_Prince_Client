@@ -5,28 +5,18 @@ import { useCookies } from "react-cookie";
 
 const LogIn = () => {
   const request = new Request();
-  const [cookies, setCookie] = useCookies(["session"]);
+  const [, setCookie] = useCookies(["session"]);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [authenticate, setAuthenticate] = useState(null);
 
   useEffect(() => {
-    const checkCookie = async () => {
-      if (cookies.session) {
-        const url = import.meta.env.VITE_API + "user/checkSession";
-        const authenticated = await request.postReq(url, cookies.session);
-        if (authenticated) {
-          window.location.href = "/";
-        }
-      }
-    };
     const getAuthenticate = async () => {
       const response = await fetch("/assets/user-msgs.json");
       const data = await response.json();
       const authenticate = new Authenticator(data);
       setAuthenticate(authenticate);
     };
-    checkCookie();
     getAuthenticate();
   }, []);
 
