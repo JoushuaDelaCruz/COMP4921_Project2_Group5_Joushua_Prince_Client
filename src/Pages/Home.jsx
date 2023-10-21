@@ -7,7 +7,7 @@ import { useCookies } from "react-cookie";
 const Home = () => {
   const request = new Request();
   const [posts, setPosts] = useState([]);
-  const [user, setUser] = useState({});
+  const [user, setUser] = useState(null);
   const [cookies, setCookie, removeCookie] = useCookies(["session"]);
   useEffect(() => {
     const getPosts = async () => {
@@ -15,8 +15,18 @@ const Home = () => {
       const data = await request.getReq(url);
       setPosts(data);
     };
+    const getUser = async () => {
+      const url = import.meta.env.VITE_API + "user";
+      const data = await request.postReq(url, cookies.session);
+      if (!data) {
+        setUser(null);
+        removeCookie("session");
+        return;
+      }
+      setUser(data);
+    };
+    getUser();
     getPosts();
-    console.log(cookies);
   }, []);
   return (
     <>
