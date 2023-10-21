@@ -43,6 +43,12 @@ class Authenticator {
     return !password;
   };
 
+  invalidLogIn = () => {
+    this.#credentialsInvalid(7, false);
+    this.#inputInvalid(2);
+    this.#inputInvalid(1);
+  };
+
   validateLogIn = (email, password) => {
     const isEmailInvalid = this.#validateLogInEmail(email);
     const isPasswordInvalid = this.#validateLogInPassword(password);
@@ -50,12 +56,12 @@ class Authenticator {
       this.#credentialsInvalid(7, false);
       this.#inputInvalid(2);
       this.#inputInvalid(1);
-      return;
+      return false;
     }
-    this.#credentialsInvalid(7);
+    this.#credentialsInvalid(7, true);
     this.#inputValid(2);
     this.#inputValid(1);
-    return;
+    return true;
   };
 }
 
