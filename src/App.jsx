@@ -1,4 +1,11 @@
 import React from "react";
+import { Home, postsLoader } from "./Pages/Home";
+import Post from "./Pages/Post";
+import LogIn from "./Pages/LogIn";
+import SignUp from "./Pages/SignUp";
+import { useCookies } from "react-cookie";
+import Request from "./Pages/models/ServerRequest";
+import { Reply, replyLoader } from "./Pages/Reply";
 import {
   Route,
   createBrowserRouter,
@@ -6,12 +13,6 @@ import {
   createRoutesFromElements,
   redirect,
 } from "react-router-dom";
-import Home from "./Pages/Home";
-import Post from "./Pages/Post";
-import LogIn from "./Pages/LogIn";
-import SignUp from "./Pages/SignUp";
-import { useCookies } from "react-cookie";
-import Request from "./Pages/models/ServerRequest";
 
 const App = () => {
   const request = new Request();
@@ -30,7 +31,15 @@ const App = () => {
   const routers = createBrowserRouter(
     createRoutesFromElements(
       <Route path="/">
-        <Route index element={<Home />} />
+        <Route index loader={() => postsLoader()} element={<Home />} />
+        <Route
+          path="/reply/:post_id"
+          loader={({ params }) => {
+            return replyLoader(params.post_id);
+          }}
+          exact
+          element={<Reply />}
+        />
         <Route
           path="/post"
           loader={async () => {
