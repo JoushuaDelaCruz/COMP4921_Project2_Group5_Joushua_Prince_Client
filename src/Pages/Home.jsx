@@ -5,10 +5,11 @@ import Request from "./models/ServerRequest";
 import { useCookies } from "react-cookie";
 import { AdvancedImage } from "@cloudinary/react";
 import { Cloudinary } from "@cloudinary/url-gen";
+import { Outlet, useLoaderData } from "react-router-dom";
 
 const Home = () => {
   const [user, setUser] = useState(null);
-  const [posts, setPosts] = useState([]);
+  const [posts] = useLoaderData();
   const [cookies, , removeCookie] = useCookies(["session"]);
   const [profileImg, setProfileImg] = useState("");
   const request = new Request();
@@ -16,11 +17,6 @@ const Home = () => {
     cloud: { cloudName: import.meta.env.VITE_CLOUD_NAME },
   });
   useEffect(() => {
-    const getPosts = async () => {
-      const url = import.meta.env.VITE_API + "post";
-      const data = await request.getReq(url);
-      setPosts(data);
-    };
     const getUser = async () => {
       const url = import.meta.env.VITE_API + "user";
       const data = await request.postReq(url, cookies.session);
@@ -34,7 +30,6 @@ const Home = () => {
       setProfileImg(image);
     };
     getUser();
-    getPosts();
   }, []);
 
   const redirectPost = () => {
@@ -61,12 +56,27 @@ const Home = () => {
 
         <section className="w-1/2 flex flex-col gap-2 items-center">
           {posts.map((post, index) => {
-            return <PostCard post={post} key={index} />;
+            return (
+              <PostCard
+                post={post}
+                key={index}
+                user={user}
+                isReplyPage={false}
+              />
+            );
           })}
         </section>
       </main>
+      <Outlet />
     </>
   );
 };
 
-export default Home;
+const postsLoader = async () => {
+  const request = new Request();
+  const url = import.meta.env.VITE_API + "post";
+  const response = await request.getReq(url);
+  return response;
+};
+
+export { Home, postsLoader };
