@@ -27,21 +27,29 @@ const PostCard = ({ post, user, isReplyPage }) => {
         )}
       </div>
       <div className="w-full p-1">
-        <Link to="#" className="w-fit flex">
-          <header className="flex gap-2 items-center p-2 w-fit">
+        <header className="flex items-center justify-between p-2 text-xs text-gray-400">
+          <Link to="#" className="w-fit flex items-center gap-2">
             <AdvancedImage
               cldImg={myImage}
               className="w-8 h-8 rounded-full ring-1 ring-gray-300 overflow-hidden object-cover"
             />
-            <span className="text-xs text-gray-400">
+            <span>
               {" "}
               Posted By <span className="font-semibold">
                 {" "}
                 {post.username}{" "}
               </span>{" "}
             </span>
-          </header>
-        </Link>
+          </Link>
+          <span className="flex items-center text-sm gap-2">
+            {" "}
+            Date Created:{" "}
+            <span className="font-bold text-xs">
+              {" "}
+              {post.date_created}{" "}
+            </span>{" "}
+          </span>
+        </header>
         <div className="p-2">
           <h2 className="text-xl font-semibold mb-3"> {post.title} </h2>
           <p className="text-sm"> {post.content} </p>
