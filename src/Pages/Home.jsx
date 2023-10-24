@@ -9,7 +9,7 @@ import { Outlet, useLoaderData } from "react-router-dom";
 
 const Home = () => {
   const [user, setUser] = useState(null);
-  const [posts] = useLoaderData();
+  const posts = useLoaderData();
   const [cookies, , removeCookie] = useCookies(["session"]);
   const [profileImg, setProfileImg] = useState("");
   const request = new Request();
@@ -31,7 +31,6 @@ const Home = () => {
     };
     getUser();
   }, []);
-
   const redirectPost = () => {
     window.location.href = "/post";
   };
