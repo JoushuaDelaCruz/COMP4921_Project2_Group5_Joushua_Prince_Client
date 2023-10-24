@@ -2,13 +2,13 @@ import React, { useState, useEffect } from "react";
 import Navbar from "./Components/Navbar";
 import { useCookies } from "react-cookie";
 import { Cloudinary } from "@cloudinary/url-gen";
-import Request from "./models/ServerRequest";
+import Request from "./Models/ServerRequest";
 import TextareaAutosize from "react-textarea-autosize";
 
 const Post = () => {
   const request = new Request();
   const [user, setUser] = useState(null);
-  const [cookies, setCookie, removeCookie] = useCookies(["session"]);
+  const [cookies, , removeCookie] = useCookies(["session"]);
   const [profileImg, setProfileImg] = useState("");
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");

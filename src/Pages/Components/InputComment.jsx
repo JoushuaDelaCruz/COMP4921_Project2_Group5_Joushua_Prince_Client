@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import TextareaAutosize from "react-textarea-autosize";
-import Request from "../models/ServerRequest";
+import Request from "../Models/ServerRequest";
 import { useCookies } from "react-cookie";
+import { redirect } from "react-router-dom";
 
 const InputComment = ({ parent_id, setReplies }) => {
-  const [cookies] = useCookies(["session"]);
+  const [cookies, , removeCookie] = useCookies(["session"]);
   const request = new Request();
   const [comment, setComment] = useState("");
   const uploadComment = async () => {
@@ -20,8 +21,9 @@ const InputComment = ({ parent_id, setReplies }) => {
       console.log(response);
       setReplies((prev) => [response, ...prev]);
     } else {
-      alert("Something went wrong. Please try again");
-      window.location.reload();
+      alert("Session expired. Please log in again");
+      removeCookie("session");
+      redirect("/");
     }
   };
   return (

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useLoaderData, useParams } from "react-router-dom";
 import Navbar from "./Components/Navbar";
-import Request from "./models/ServerRequest";
+import Request from "./Models/ServerRequest";
 import PostCard from "./Components/PostCard";
 import InputComment from "./Components/InputComment";
 import { useEffect } from "react";

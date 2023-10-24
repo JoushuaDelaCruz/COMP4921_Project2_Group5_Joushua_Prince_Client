@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import Authenticator from "./models/LogInAuthenticator";
-import Request from "./models/ServerRequest";
+import Authenticator from "./Models/LogInAuthenticator";
+import Request from "./Models/ServerRequest";
 import { useCookies } from "react-cookie";
 
 const LogIn = () => {

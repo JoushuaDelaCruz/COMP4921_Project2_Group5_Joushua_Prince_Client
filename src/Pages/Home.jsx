@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import PostCard from "./Components/PostCard";
 import Navbar from "./Components/Navbar";
-import Request from "./models/ServerRequest";
+import Request from "./Models/ServerRequest";
 import { useCookies } from "react-cookie";
 import { AdvancedImage } from "@cloudinary/react";
 import { Cloudinary } from "@cloudinary/url-gen";
