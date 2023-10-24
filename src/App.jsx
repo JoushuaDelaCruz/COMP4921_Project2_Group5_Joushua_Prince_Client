@@ -13,6 +13,7 @@ import {
   createRoutesFromElements,
   redirect,
 } from "react-router-dom";
+import { useEffect } from "react";
 
 const App = () => {
   const request = new Request();
@@ -31,7 +32,13 @@ const App = () => {
   const routers = createBrowserRouter(
     createRoutesFromElements(
       <Route path="/">
-        <Route index loader={() => postsLoader()} element={<Home />} />
+        <Route
+          index
+          loader={async () => {
+            return await postsLoader();
+          }}
+          element={<Home />}
+        />
         <Route
           path="/reply/:post_id"
           loader={({ params }) => {
