@@ -4,7 +4,7 @@ import Post from "./Pages/Post";
 import LogIn from "./Pages/LogIn";
 import SignUp from "./Pages/SignUp";
 import { useCookies } from "react-cookie";
-import Request from "./Pages/models/ServerRequest";
+import Request from "./Pages/Models/ServerRequest";
 import { Reply, replyLoader } from "./Pages/Reply";
 import {
   Route,
