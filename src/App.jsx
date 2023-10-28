@@ -13,7 +13,7 @@ import {
   createRoutesFromElements,
   redirect,
 } from "react-router-dom";
-import { useEffect } from "react";
+import { Search, SearchLoader } from "./Pages/Search";
 
 const App = () => {
   const request = new Request();
@@ -82,6 +82,14 @@ const App = () => {
           }}
           exact
           element={<SignUp />}
+        />
+        <Route
+          path="/search/:text"
+          loader={async ({ params }) => {
+            return SearchLoader(params.text);
+          }}
+          exact
+          element={<Search />}
         />
       </Route>
     )
