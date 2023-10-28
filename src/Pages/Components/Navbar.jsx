@@ -1,8 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link, Outlet } from "react-router-dom";
 import { AdvancedImage } from "@cloudinary/react";
+import { redirect } from "react-router-dom";
 
-const Navbar = ({ user, image }) => {
+const Navbar = ({ user, image, search = "" }) => {
+  const [text, setText] = useState(search);
+  const searchText = (e) => {
+    if (e.key === "Enter") {
+      window.location.href = "/search/" + text;
+    }
+  };
+
   const RightSidebar = () => {
     if (user) {
       return (
@@ -72,6 +80,9 @@ const Navbar = ({ user, image }) => {
                 type="text"
                 className="w-full p-3 bg-gray-50 rounded-r-3xl text-gray-800 focus:outline-none focus:ring-2 focus:ring-cyan-600 focus:border-transparent"
                 placeholder="Search ChatBook"
+                onKeyDown={searchText}
+                onChange={(e) => setText(e.target.value)}
+                defaultValue={search}
               />
             </div>
             {user && (
@@ -83,7 +94,7 @@ const Navbar = ({ user, image }) => {
               </Link>
             )}
           </div>
-          <div className="aflex items-center sm:inset-auto ml-1 sm:pr-0 h-full">
+          <div className="flex items-center sm:inset-auto ml-1 sm:pr-0 h-full">
             <div className="flex ml-1 h-full py-1 gap-31 items-center">
               {RightSidebar()}
             </div>
