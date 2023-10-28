@@ -3,7 +3,7 @@ import { AdvancedImage } from "@cloudinary/react";
 import { Cloudinary } from "@cloudinary/url-gen";
 import { Link } from "react-router-dom";
 
-const PostCard = ({ post, user, isReplyPage }) => {
+const PostCard = ({ post, user, isReplyPage, numReplies = null }) => {
   const cld = new Cloudinary({
     cloud: { cloudName: import.meta.env.VITE_CLOUD_NAME },
   });
@@ -60,7 +60,7 @@ const PostCard = ({ post, user, isReplyPage }) => {
               <i className="fa-regular fa-comment fa-lg"></i>
               <span className="text-xs font-bold">
                 {" "}
-                {post.num_comments} Comments{" "}
+                {numReplies ? numReplies : post.num_comments} Comments{" "}
               </span>
             </div>
           ) : (

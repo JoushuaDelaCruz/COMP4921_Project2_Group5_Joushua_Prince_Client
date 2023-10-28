@@ -13,6 +13,7 @@ const Reply = () => {
   const { post_id } = useParams();
   const [user, profileImg] = useUser();
   const [post] = useLoaderData();
+  const [numReplies, setNumReplies] = useState(0);
   const [replies, setReplies] = useState([]);
   useEffect(() => {
     const getReplies = async () => {
@@ -23,12 +24,21 @@ const Reply = () => {
     getReplies();
   }, []);
 
+  useEffect(() => {
+    setNumReplies(replies.length);
+  }, [replies]);
+
   return (
     <>
       <Navbar user={user} image={profileImg} />
       <main className="flex justify-center background">
         <div className="w-3/5 my-6 rounded-md p-2">
-          <PostCard post={post} isReplyPage={true} user={user} />
+          <PostCard
+            post={post}
+            isReplyPage={true}
+            user={user}
+            numReplies={numReplies}
+          />
           <section className="w-full rounded-sm my-2 px-12 pt-5 pb-1  bg-white">
             {user && (
               <>
