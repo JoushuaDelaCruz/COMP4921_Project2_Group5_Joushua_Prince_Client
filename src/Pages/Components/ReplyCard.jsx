@@ -22,7 +22,7 @@ const ReplyCard = ({ reply }) => {
       <section className="flex w-full flex-col ml-2">
         <div className="flex flex-col w-full gap-1">
           <header className="flex items-center h-12 justify-between">
-            <span className="font-medium text-sm"> {reply.username}</span>
+            <span className="font-medium text-sm">{reply.username}</span>
             <span className="font-semibold text-xs text-gray-500">
               {reply.date_created}
             </span>
@@ -35,11 +35,11 @@ const ReplyCard = ({ reply }) => {
               <>
                 <div className="flex items-center gap-1">
                   <button className="p-1 hover:bg-slate-100 rounded-sm">
-                    <i class="fa-regular fa-square-caret-up fa-xl text-gray-400"></i>
+                    <i className="fa-regular fa-square-caret-up fa-xl text-gray-400"></i>
                   </button>
                   <span className="text-sm">0</span>
                   <button className="p-1 hover:bg-slate-100 rounded-sm">
-                    <i class="fa-regular fa-square-caret-down fa-xl text-gray-400"></i>
+                    <i className="fa-regular fa-square-caret-down fa-xl text-gray-400"></i>
                   </button>
                 </div>
                 <button
