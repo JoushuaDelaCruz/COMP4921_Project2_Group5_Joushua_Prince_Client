@@ -1,33 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { useLoaderData, useParams } from "react-router-dom";
 import Navbar from "./Components/Navbar";
-import { Cloudinary } from "@cloudinary/url-gen";
+import useUser from "./Models/useUser";
 import Request from "./Models/ServerRequest";
 
 const Search = () => {
   const { text } = useParams();
   const textResults = useLoaderData();
-  const [user, setUser] = useState(null);
-  const [profileImg, setProfileImg] = useState("");
-  const cld = new Cloudinary({
-    cloud: { cloudName: import.meta.env.VITE_CLOUD_NAME },
-  });
-
-  useEffect(() => {
-    const getUser = async () => {
-      const url = import.meta.env.VITE_API + "user";
-      const data = await request.postReq(url, cookies.session);
-      if (!data) {
-        setUser(null);
-        removeCookie("session");
-        return;
-      }
-      setUser(data);
-      const image = cld.image(data.profile_img);
-      setProfileImg(image);
-    };
-    getUser();
-  });
+  const [user, profileImg] = useUser();
   return (
     <>
       <Navbar user={user} image={profileImg} search={text} />

@@ -4,37 +4,13 @@ import Navbar from "./Components/Navbar";
 import Request from "./Models/ServerRequest";
 import PostCard from "./Components/PostCard";
 import InputComment from "./Components/InputComment";
-import { useEffect } from "react";
-import { useCookies } from "react-cookie";
-import { Cloudinary } from "@cloudinary/url-gen";
+import useUser from "./Models/useUser";
 
 const Reply = () => {
-  const request = new Request();
-  const [cookies, , removeCookie] = useCookies(["session"]);
+  const [user, profileImg] = useUser();
   const { post_id } = useParams();
   const [post] = useLoaderData();
   const [replies, setReplies] = useState([]);
-  const [user, setUser] = useState(null);
-  const [profileImg, setProfileImg] = useState("");
-  const cld = new Cloudinary({
-    cloud: { cloudName: import.meta.env.VITE_CLOUD_NAME },
-  });
-
-  useEffect(() => {
-    const getUser = async () => {
-      const url = import.meta.env.VITE_API + "user";
-      const data = await request.postReq(url, cookies.session);
-      if (!data) {
-        setUser(null);
-        removeCookie("session");
-        return;
-      }
-      setUser(data);
-      const image = cld.image(data.profile_img);
-      setProfileImg(image);
-    };
-    getUser();
-  });
 
   return (
     <>
@@ -45,7 +21,11 @@ const Reply = () => {
           <section className="w-full rounded-sm my-2 px-12 py-5  bg-white">
             {user && (
               <>
-                <InputComment parent_id={post_id} setReplies={setReplies} />
+                <InputComment
+                  parent_id={post_id}
+                  setReplies={setReplies}
+                  username={user.username}
+                />
                 <hr className="h-px bg-cyan-400 border-0 dark:bg-cyan-700 my-10" />
               </>
             )}

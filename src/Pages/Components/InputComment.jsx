@@ -4,7 +4,7 @@ import Request from "../Models/ServerRequest";
 import { useCookies } from "react-cookie";
 import { redirect } from "react-router-dom";
 
-const InputComment = ({ parent_id, setReplies, setIsReply, user }) => {
+const InputComment = ({ parent_id, setReplies, setIsReply, username }) => {
   const [cookies, , removeCookie] = useCookies(["session"]);
   const request = new Request();
   const [comment, setComment] = useState("");
@@ -34,7 +34,7 @@ const InputComment = ({ parent_id, setReplies, setIsReply, user }) => {
   };
   return (
     <div className="flex flex-col justify-center">
-      <span className="py-1 text-sm"> Comment as {user.username} </span>
+      <span className="py-1 text-sm"> Comment as {username} </span>
       <div className="flex flex-col w-full ring-1 ring-blue-200">
         <TextareaAutosize
           className="w-full text-base p-3 focus:outline-none focus:ring-none"

@@ -1,37 +1,15 @@
 import React, { useState, useEffect } from "react";
 import Navbar from "./Components/Navbar";
-import { useCookies } from "react-cookie";
-import { Cloudinary } from "@cloudinary/url-gen";
+import useUser from "./Models/useUser";
 import Request from "./Models/ServerRequest";
 import TextareaAutosize from "react-textarea-autosize";
 
 const Post = () => {
   const request = new Request();
-  const [user, setUser] = useState(null);
-  const [cookies, , removeCookie] = useCookies(["session"]);
-  const [profileImg, setProfileImg] = useState("");
+  const [user, profileImg] = useUser();
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [titleCounter, setTitleCounter] = useState(0);
-  const cld = new Cloudinary({
-    cloud: { cloudName: import.meta.env.VITE_CLOUD_NAME },
-  });
-  useEffect(() => {
-    const getUser = async () => {
-      const url = import.meta.env.VITE_API + "user";
-      const data = await request.postReq(url, cookies.session);
-      if (!data) {
-        setUser(null);
-        removeCookie("session");
-        window.location.href = "/";
-        return;
-      }
-      setUser(data);
-      const image = cld.image(data.profile_img);
-      setProfileImg(image);
-    };
-    getUser();
-  }, []);
 
   const userWritesTitle = async (e) => {
     setTitle(e.target.value);

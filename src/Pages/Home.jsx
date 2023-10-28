@@ -2,35 +2,14 @@ import React, { useEffect, useState } from "react";
 import PostCard from "./Components/PostCard";
 import Navbar from "./Components/Navbar";
 import Request from "./Models/ServerRequest";
-import { useCookies } from "react-cookie";
 import { AdvancedImage } from "@cloudinary/react";
-import { Cloudinary } from "@cloudinary/url-gen";
 import { Outlet, useLoaderData } from "react-router-dom";
+import useUser from "./Models/useUser";
 
 const Home = () => {
-  const [user, setUser] = useState(null);
+  const [user, profileImg] = useUser();
   const posts = useLoaderData();
-  const [cookies, , removeCookie] = useCookies(["session"]);
-  const [profileImg, setProfileImg] = useState("");
-  const request = new Request();
-  const cld = new Cloudinary({
-    cloud: { cloudName: import.meta.env.VITE_CLOUD_NAME },
-  });
-  useEffect(() => {
-    const getUser = async () => {
-      const url = import.meta.env.VITE_API + "user";
-      const data = await request.postReq(url, cookies.session);
-      if (!data) {
-        setUser(null);
-        removeCookie("session");
-        return;
-      }
-      setUser(data);
-      const image = cld.image(data.profile_img);
-      setProfileImg(image);
-    };
-    getUser();
-  }, []);
+
   const redirectPost = () => {
     window.location.href = "/post";
   };
