@@ -79,6 +79,12 @@ const PostCard = ({ post, user, isReplyPage, numReplies = null }) => {
             <i className="fa-regular fa-bookmark fa-lg"></i>
             <span className="text-xs font-bold"> Bookmark </span>
           </button>
+          {post.user_id === user?.id && (
+            <button className="flex items-center gap-2 p-2 mt-1 rounded-sm text-gray-400 hover:bg-gray-100 hover:text-red-600">
+              <i class="fa-regular fa-trash-can fa-lg"></i>
+              <span className="text-xs font-bold"> Delete </span>
+            </button>
+          )}
         </footer>
       </div>
     </div>
