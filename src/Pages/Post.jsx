@@ -5,7 +5,6 @@ import Request from "./Models/ServerRequest";
 import TextareaAutosize from "react-textarea-autosize";
 
 const Post = () => {
-  const request = new Request();
   const [user, profileImg] = useUser();
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
@@ -17,6 +16,7 @@ const Post = () => {
   };
 
   const submitPost = async () => {
+    const request = new Request();
     const url = import.meta.env.VITE_API + "post/create";
     const data = {
       title: title,

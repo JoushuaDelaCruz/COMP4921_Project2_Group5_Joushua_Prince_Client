@@ -9,13 +9,13 @@ import RepliesTreeView from "./Components/RepliesTreeView";
 import { UserContext, RepliesContext } from "./Models/Contexts";
 
 const Reply = () => {
-  const request = new Request();
   const { post_id } = useParams();
   const [user, profileImg] = useUser();
   const [post] = useLoaderData();
   const [numReplies, setNumReplies] = useState(0);
   const [replies, setReplies] = useState([]);
   useEffect(() => {
+    const request = new Request();
     const getReplies = async () => {
       const url = import.meta.env.VITE_API + "reply/" + post_id;
       const data = await request.getReq(url);
