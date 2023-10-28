@@ -6,6 +6,8 @@ import SignUp from "./Pages/SignUp";
 import { useCookies } from "react-cookie";
 import Request from "./Pages/Models/ServerRequest";
 import { Reply, replyLoader } from "./Pages/Reply";
+import { Search, SearchLoader } from "./Pages/Search";
+import Profile from "./Pages/Profile";
 import {
   Route,
   createBrowserRouter,
@@ -13,7 +15,6 @@ import {
   createRoutesFromElements,
   redirect,
 } from "react-router-dom";
-import { Search, SearchLoader } from "./Pages/Search";
 
 const App = () => {
   const request = new Request();
@@ -91,6 +92,7 @@ const App = () => {
           exact
           element={<Search />}
         />
+        <Route path="/profile" exact element={<Profile />} />
       </Route>
     )
   );
