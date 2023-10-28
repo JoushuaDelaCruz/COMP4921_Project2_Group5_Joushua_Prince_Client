@@ -4,7 +4,7 @@ import Request from "../Models/ServerRequest";
 import { useCookies } from "react-cookie";
 import { redirect } from "react-router-dom";
 
-const InputComment = ({ parent_id, setReplies }) => {
+const InputComment = ({ parent_id, setReplies, setIsReply, user }) => {
   const [cookies, , removeCookie] = useCookies(["session"]);
   const request = new Request();
   const [comment, setComment] = useState("");
@@ -16,19 +16,25 @@ const InputComment = ({ parent_id, setReplies }) => {
       sessionID: cookies.session,
     };
     const response = await request.postReq(url, data);
-    console.log(response);
     if (response) {
-      console.log(response);
+      setComment("");
       setReplies((prev) => [response, ...prev]);
+      if (setIsReply) {
+        setIsReply(false);
+      }
     } else {
       alert("Session expired. Please log in again");
       removeCookie("session");
       redirect("/");
     }
   };
+
+  const cancelReply = () => {
+    setIsReply(false);
+  };
   return (
     <div className="flex flex-col justify-center">
-      <span className="py-1 text-sm"> Comment as Joushua </span>
+      <span className="py-1 text-sm"> Comment as {user.username} </span>
       <div className="flex flex-col w-full ring-1 ring-blue-200">
         <TextareaAutosize
           className="w-full text-base p-3 focus:outline-none focus:ring-none"
@@ -39,8 +45,11 @@ const InputComment = ({ parent_id, setReplies }) => {
           placeholder="Write your thoughts..."
         />
         <div className="flex justify-end bg-blue-100 py-3 px-2 gap-2">
-          {comment && (
-            <button className="text-sm font-semibold hover:bg-gray-700 hover:text-white px-4 rounded-xl">
+          {setIsReply && (
+            <button
+              className="text-sm font-semibold hover:bg-gray-700 hover:text-white px-4 rounded-xl"
+              onClick={cancelReply}
+            >
               Cancel
             </button>
           )}
