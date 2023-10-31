@@ -50,8 +50,13 @@ const Home = () => {
   );
 };
 
-const postsLoader = async () => {
+const postsLoader = async (isUser, sessionID) => {
   const request = new Request();
+  if (isUser && sessionID) {
+    const url = import.meta.env.VITE_API + "post/" + sessionID;
+    const response = await request.getReq(url);
+    return response;
+  }
   const url = import.meta.env.VITE_API + "post";
   const response = await request.getReq(url);
   return response;
