@@ -2,27 +2,39 @@ import React from "react";
 import { AdvancedImage } from "@cloudinary/react";
 import { Cloudinary } from "@cloudinary/url-gen";
 import { Link } from "react-router-dom";
+import useVoteSys from "../Models/useVoteSys";
 
 const PostCard = ({ post, user, isReplyPage, numReplies = null }) => {
+  const [upListener, downListener, votes, isUpVoted, isDownVoted] =
+    useVoteSys(post);
   const cld = new Cloudinary({
     cloud: { cloudName: import.meta.env.VITE_CLOUD_NAME },
   });
   const myImage = cld.image(post.profile_img);
+
   return (
     <div className="flex w-full bg-white h-fit rounded-sm">
       <div className="w-12 flex flex-col items-center content-center bg-blue-100 gap-3 rounded-l">
         {user && (
-          <button className="mt-3 text-green-400">
-            <i className="fa-regular fa-circle-up fa-2xl"></i>
+          <button className="mt-3 text-green-400" onClick={upListener}>
+            <i
+              className={
+                (isUpVoted ? "fa-solid" : "fa-regular") + " fa-circle-up fa-2xl"
+              }
+            ></i>
           </button>
         )}
         <span className={"font-semibold text-sm " + (user ? "" : "my-3")}>
-          {" "}
-          {post.num_votes || 0}{" "}
+          {votes}
         </span>
         {user && (
-          <button className="text-green-400">
-            <i className="fa-regular fa-circle-down fa-2xl"></i>
+          <button className="text-green-400" onClick={downListener}>
+            <i
+              className={
+                (isDownVoted ? "fa-solid" : "fa-regular") +
+                " fa-circle-down fa-2xl"
+              }
+            ></i>
           </button>
         )}
       </div>
@@ -81,7 +93,7 @@ const PostCard = ({ post, user, isReplyPage, numReplies = null }) => {
           </button>
           {post.user_id === user?.id && (
             <button className="flex items-center gap-2 p-2 mt-1 rounded-sm text-gray-400 hover:bg-gray-100 hover:text-red-600">
-              <i class="fa-regular fa-trash-can fa-lg"></i>
+              <i className="fa-regular fa-trash-can fa-lg"></i>
               <span className="text-xs font-bold"> Delete </span>
             </button>
           )}
