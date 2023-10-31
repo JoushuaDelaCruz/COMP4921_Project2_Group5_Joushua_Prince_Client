@@ -36,7 +36,8 @@ const App = () => {
         <Route
           index
           loader={async () => {
-            return await postsLoader();
+            const cookieStatus = await isCookieValid();
+            return await postsLoader(cookieStatus, cookies.session);
           }}
           element={<Home />}
         />
