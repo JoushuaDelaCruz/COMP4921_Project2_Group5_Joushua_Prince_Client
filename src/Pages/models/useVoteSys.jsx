@@ -6,10 +6,8 @@ const useVoteSys = (content) => {
   const UP_VOTE = 1;
   const DOWN_VOTE = -1;
   const request = new Request();
-  const [isUpVoted, setIsUpVoted] = useState(content.vote_value === UP_VOTE);
-  const [isDownVoted, setIsDownVoted] = useState(
-    content.vote_value === DOWN_VOTE
-  );
+  const [isUpVoted, setIsUpVoted] = useState(content.value === UP_VOTE);
+  const [isDownVoted, setIsDownVoted] = useState(content.value === DOWN_VOTE);
   const [votes, setVotes] = useState(parseInt(content.num_votes));
   const [cookies] = useCookies(["session"]);
 
@@ -17,7 +15,7 @@ const useVoteSys = (content) => {
     const url = import.meta.env.VITE_API + "votes/toggle";
     const data = {
       vote_id: content.vote_id,
-      vote_orig: content.vote_value,
+      vote_orig: content.value,
       sessionID: cookies.session,
     };
     const response = await request.postReq(url, data);
@@ -44,7 +42,7 @@ const useVoteSys = (content) => {
     const response = await request.postReq(url, data);
     if (response) {
       content.vote_id = response.vote_id;
-      content.vote_value = is_up_vote ? UP_VOTE : DOWN_VOTE;
+      content.value = is_up_vote ? UP_VOTE : DOWN_VOTE;
       return true;
     }
     return false;
