@@ -14,7 +14,6 @@ const useVoteSys = (content) => {
   const [cookies] = useCookies(["session"]);
 
   const toggleRecordedVote = async () => {
-    console.log("toggleRecordedVote");
     const url = import.meta.env.VITE_API + "votes/toggle";
     const data = {
       vote_id: content.vote_id,
@@ -26,12 +25,16 @@ const useVoteSys = (content) => {
   };
 
   const recordUnVote = async () => {
-    console.log("unVote");
-    return;
+    const url = import.meta.env.VITE_API + "votes/unVote";
+    const data = {
+      vote_id: content.vote_id,
+      sessionID: cookies.session,
+    };
+    const response = await request.postReq(url, data);
+    return response;
   };
 
   const recordNewVote = async (is_up_vote) => {
-    console.log("recordNewVote");
     const url = import.meta.env.VITE_API + "votes/record";
     const data = {
       content_id: content.content_id,
