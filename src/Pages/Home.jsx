@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import PostCard from "./Components/PostCard";
 import Navbar from "./Components/Navbar";
 import Request from "./Models/ServerRequest";
@@ -9,7 +9,6 @@ import useUser from "./Models/useUser";
 const Home = () => {
   const [user, profileImg] = useUser();
   const posts = useLoaderData();
-
   const redirectPost = () => {
     window.location.href = "/post";
   };
@@ -50,9 +49,9 @@ const Home = () => {
   );
 };
 
-const postsLoader = async (isUser, sessionID) => {
+const postsLoader = async (sessionID) => {
   const request = new Request();
-  if (isUser && sessionID) {
+  if (sessionID) {
     const url = import.meta.env.VITE_API + "post/" + sessionID;
     const response = await request.getReq(url);
     return response;
