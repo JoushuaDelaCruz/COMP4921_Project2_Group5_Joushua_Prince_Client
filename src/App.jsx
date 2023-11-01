@@ -19,11 +19,13 @@ import {
 const App = () => {
   const request = new Request();
   const [cookies, , removeCookie] = useCookies(["session"]);
-
   const isCookieValid = async () => {
     if (cookies.session) {
       const url = import.meta.env.VITE_API + "user/checkSession";
       const authenticated = await request.postReq(url, cookies.session);
+      if (!authenticated) {
+        removeCookie("session");
+      }
       return authenticated;
     }
     removeCookie("session");
@@ -36,15 +38,16 @@ const App = () => {
         <Route
           index
           loader={async () => {
-            const cookieStatus = await isCookieValid();
-            return await postsLoader(cookieStatus, cookies.session);
+            await isCookieValid();
+            return await postsLoader(cookies.session);
           }}
           element={<Home />}
         />
         <Route
           path="/reply/:post_id"
-          loader={({ params }) => {
-            return replyLoader(params.post_id);
+          loader={async ({ params }) => {
+            await isCookieValid();
+            return await replyLoader(params.post_id, cookies.session);
           }}
           exact
           element={<Reply />}
