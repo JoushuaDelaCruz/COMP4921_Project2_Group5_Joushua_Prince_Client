@@ -66,9 +66,16 @@ const Reply = () => {
   );
 };
 
-const replyLoader = async (post_id) => {
+const replyLoader = async (post_id, sessionID) => {
   const request = new Request();
-  const url = import.meta.env.VITE_API + "post/" + post_id;
+  if (sessionID) {
+    const url =
+      import.meta.env.VITE_API + "post/getPost/" + post_id + "/" + sessionID;
+    const response = await request.getReq(url);
+    return response;
+  }
+  const url = import.meta.env.VITE_API + "post/getPost/" + post_id;
+  console.log(url);
   const response = await request.getReq(url);
   return response;
 };
