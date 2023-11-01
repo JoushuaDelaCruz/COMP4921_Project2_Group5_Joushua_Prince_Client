@@ -32,7 +32,7 @@ const useVoteSys = (content) => {
 
   const recordNewVote = async (is_up_vote) => {
     console.log("recordNewVote");
-    const url = import.meta.env.VITE_API + "votes/new";
+    const url = import.meta.env.VITE_API + "votes/record";
     const data = {
       content_id: content.content_id,
       is_up_vote: is_up_vote,
