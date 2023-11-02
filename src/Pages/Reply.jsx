@@ -7,6 +7,7 @@ import InputComment from "./Components/InputComment";
 import useUser from "./Models/useUser";
 import RepliesTreeView from "./Components/RepliesTreeView";
 import { UserContext, RepliesContext } from "./Models/Contexts";
+import { useCookies } from "react-cookie";
 
 const Reply = () => {
   const { post_id } = useParams();
@@ -14,9 +15,17 @@ const Reply = () => {
   const [post] = useLoaderData();
   const [numReplies, setNumReplies] = useState(0);
   const [replies, setReplies] = useState([]);
+  const [cookies] = useCookies(["session"]);
   useEffect(() => {
     const request = new Request();
     const getReplies = async () => {
+      if (cookies.session) {
+        const url =
+          import.meta.env.VITE_API + "reply/" + post_id + "/" + cookies.session;
+        const data = await request.getReq(url);
+        setReplies(data);
+        return;
+      }
       const url = import.meta.env.VITE_API + "reply/" + post_id;
       const data = await request.getReq(url);
       setReplies(data);

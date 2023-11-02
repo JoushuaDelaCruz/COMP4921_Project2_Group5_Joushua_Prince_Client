@@ -4,9 +4,12 @@ import { Cloudinary } from "@cloudinary/url-gen";
 import { AdvancedImage } from "@cloudinary/react";
 import { useContext } from "react";
 import { RepliesContext, UserContext } from "../Models/Contexts";
+import useVoteSys from "../Models/useVoteSys";
 
 const ReplyCard = ({ reply }) => {
   const [isReply, setIsReply] = useState(false);
+  const [upListener, downListener, votes, isUpVoted, isDownVoted] =
+    useVoteSys(reply);
   const setReplies = useContext(RepliesContext);
   const user = useContext(UserContext);
   const cld = new Cloudinary({
@@ -34,12 +37,31 @@ const ReplyCard = ({ reply }) => {
             {user && (
               <>
                 <div className="flex items-center gap-1">
-                  <button className="p-1 hover:bg-slate-100 rounded-sm">
-                    <i className="fa-regular fa-square-caret-up fa-xl text-gray-400"></i>
+                  <button
+                    className="p-1 hover:bg-slate-100 rounded-sm"
+                    onClick={upListener}
+                  >
+                    <i
+                      className={
+                        (isUpVoted
+                          ? "fa-solid text-green-400"
+                          : "fa-regular text-gray-400") + " fa-circle-up fa-xl"
+                      }
+                    ></i>
                   </button>
-                  <span className="text-sm">0</span>
-                  <button className="p-1 hover:bg-slate-100 rounded-sm">
-                    <i className="fa-regular fa-square-caret-down fa-xl text-gray-400"></i>
+                  <span className="text-sm">{votes}</span>
+                  <button
+                    className="p-1 hover:bg-slate-100 rounded-sm"
+                    onClick={downListener}
+                  >
+                    <i
+                      className={
+                        (isDownVoted
+                          ? "fa-solid text-green-400"
+                          : "fa-regular text-gray-400") +
+                        " fa-circle-down fa-xl"
+                      }
+                    ></i>
                   </button>
                 </div>
                 <button
