@@ -16,7 +16,7 @@ const Navbar = ({ user, image, search = "" }) => {
   const logout = async () => {
     const request = new Request();
     const url = import.meta.env.VITE_API + "user/logout";
-    const successful = request.postReq(url, cookies.session);
+    const successful = await request.postReq(url, cookies.session);
     if (successful) {
       removeCookie("session");
       window.location.reload();
@@ -35,7 +35,7 @@ const Navbar = ({ user, image, search = "" }) => {
               cldImg={image}
               className="h-11 w-12 rounded-md object-cover"
             />
-            <span className="text-sm font-medium text-slate-700 w-12 min-w-18 text-center">
+            <span className="text-sm font-medium text-slate-700 w-fit text-center">
               {user.username}
             </span>
           </Link>
