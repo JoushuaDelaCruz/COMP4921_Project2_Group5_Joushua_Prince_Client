@@ -18,9 +18,6 @@ const useEditContent = (content) => {
   };
 
   const editContent = async () => {
-    if (content.content === text) {
-      return;
-    }
     const url = import.meta.env.VITE_API + "user/editContent";
     const data = {
       content_id: content.content_id,
