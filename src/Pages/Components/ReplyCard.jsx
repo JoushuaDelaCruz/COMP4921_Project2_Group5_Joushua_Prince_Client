@@ -17,7 +17,7 @@ const ReplyCard = ({ reply }) => {
   });
   const profileImg = cld.image(reply.profile_img);
   return (
-    <div className="flex">
+    <div className="flex border-b-2 border-l-2 border-gray-100 p-1 m-1 rounded">
       <AdvancedImage
         cldImg={profileImg}
         className="h-12 w-12 rounded-full border-2 border-gray-200 object-cover"
@@ -33,7 +33,7 @@ const ReplyCard = ({ reply }) => {
           <div className="text-base align-middle subpixel-antialiased">
             {reply.content}
           </div>
-          <footer className="flex gap-2 items-center py-1">
+          <footer className="flex gap-2 items-center py-1 border-t-2 border-blue-300">
             {user && (
               <>
                 <div className="flex items-center gap-1">
