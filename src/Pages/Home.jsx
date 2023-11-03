@@ -5,12 +5,23 @@ import Request from "./Models/ServerRequest";
 import { AdvancedImage } from "@cloudinary/react";
 import { Outlet, useLoaderData } from "react-router-dom";
 import useUser from "./Models/useUser";
+import { useState } from "react";
+import { SetPostsHandlerContext } from "./Models/Contexts";
 
 const Home = () => {
   const [user, profileImg] = useUser();
-  const posts = useLoaderData();
+  const [posts, setPosts] = useState(useLoaderData());
   const redirectPost = () => {
     window.location.href = "/post";
+  };
+  const editPostHandler = (content_id, newContent) => {
+    const newPosts = posts.map((post) => {
+      if (post.content_id === content_id) {
+        post.content = newContent;
+      }
+      return post;
+    });
+    setPosts(newPosts);
   };
   return (
     <>
@@ -32,16 +43,18 @@ const Home = () => {
         )}
 
         <section className="w-1/2 flex flex-col gap-2 items-center">
-          {posts.map((post, index) => {
-            return (
-              <PostCard
-                post={post}
-                key={index}
-                user={user}
-                isReplyPage={false}
-              />
-            );
-          })}
+          <SetPostsHandlerContext.Provider value={editPostHandler}>
+            {posts.map((post, index) => {
+              return (
+                <PostCard
+                  post={post}
+                  key={index}
+                  user={user}
+                  isReplyPage={false}
+                />
+              );
+            })}
+          </SetPostsHandlerContext.Provider>
         </section>
       </main>
       <Outlet />
