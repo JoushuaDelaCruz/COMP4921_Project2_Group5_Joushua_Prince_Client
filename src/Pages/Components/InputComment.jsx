@@ -18,7 +18,7 @@ const InputComment = ({ parent_id, setReplies, setIsReply, username }) => {
     const response = await request.postReq(url, data);
     if (response) {
       setComment("");
-      setReplies((prev) => [response, ...prev]);
+      setReplies((prev) => [...prev, response]);
       if (setIsReply) {
         setIsReply(false);
       }
