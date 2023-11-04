@@ -6,7 +6,11 @@ import PostCard from "./Components/PostCard";
 import InputComment from "./Components/InputComment";
 import useUser from "./Models/useUser";
 import RepliesTreeView from "./Components/RepliesTreeView";
-import { UserContext, RepliesContext } from "./Models/Contexts";
+import {
+  UserContext,
+  RepliesContext,
+  EditContentHandlerContext,
+} from "./Models/Contexts";
 import { useCookies } from "react-cookie";
 
 const Reply = () => {
@@ -16,6 +20,17 @@ const Reply = () => {
   const [numReplies, setNumReplies] = useState(0);
   const [replies, setReplies] = useState([]);
   const [cookies] = useCookies(["session"]);
+
+  const editPostHandler = (content_id, newContent) => {
+    const newReplies = replies.map((reply) => {
+      if (reply.content_id === content_id) {
+        reply.content = newContent;
+      }
+      return reply;
+    });
+    setReplies(newReplies);
+  };
+
   useEffect(() => {
     const request = new Request();
     const getReplies = async () => {
@@ -59,15 +74,17 @@ const Reply = () => {
                 <hr className="h-px bg-cyan-400 border-0 dark:bg-cyan-700 my-10" />
               </>
             )}
-            <RepliesContext.Provider value={setReplies}>
-              <UserContext.Provider value={user}>
-                <RepliesTreeView
-                  replies={replies}
-                  parent_id={post_id}
-                  level={0}
-                />
-              </UserContext.Provider>
-            </RepliesContext.Provider>
+            <EditContentHandlerContext.Provider value={editPostHandler}>
+              <RepliesContext.Provider value={setReplies}>
+                <UserContext.Provider value={user}>
+                  <RepliesTreeView
+                    replies={replies}
+                    parent_id={post_id}
+                    level={0}
+                  />
+                </UserContext.Provider>
+              </RepliesContext.Provider>
+            </EditContentHandlerContext.Provider>
           </section>
         </div>{" "}
       </main>
