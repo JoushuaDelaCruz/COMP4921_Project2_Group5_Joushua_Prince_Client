@@ -1,14 +1,14 @@
 import { useState, useContext } from "react";
 import { useCookies } from "react-cookie";
 import Request from "./ServerRequest";
-import { SetPostsHandlerContext } from "./Contexts";
+import { EditContentHandlerContext } from "./Contexts";
 
 const useEditContent = (content) => {
   const [isEditing, setIsEditing] = useState(false);
   const [hasChanged, setHasChanged] = useState(false);
   const [text, setText] = useState(content.content);
   const [cookies] = useCookies(["session"]);
-  const setPostsHandler = useContext(SetPostsHandlerContext);
+  const setPostsHandler = useContext(EditContentHandlerContext);
 
   const toggleEdit = () => {
     if (isEditing) {
