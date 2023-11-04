@@ -68,19 +68,17 @@ const PostCard = ({ post, user, isReplyPage, numReplies = null }) => {
         </header>
         <div className="p-2">
           <h2 className="text-xl font-semibold mb-3"> {post.title} </h2>
-          <div className="relative">
-            <TextareaAutosize
-              type="text"
-              className={
-                (isEditing ? "ring-gray-400" : "ring-white") +
-                " p-1 flex-1 rounded-sm resize-none overflow-hidden text-sm ring-1 align-middle w-full bg-white"
-              }
-              placeholder={isEditing ? "Write a title" : undefined}
-              value={text}
-              onChange={changeHandler}
-              disabled={!isEditing}
-            />
-          </div>
+          <TextareaAutosize
+            type="text"
+            className={
+              (isEditing ? "ring-gray-400" : "ring-white") +
+              " p-1 flex-1 rounded-sm resize-none overflow-hidden text-sm ring-1 align-middle w-full bg-white"
+            }
+            placeholder={isEditing ? "Write a title" : undefined}
+            value={text}
+            onChange={changeHandler}
+            disabled={!isEditing}
+          />
         </div>
         {isEditing && user ? (
           <footer className="flex justify-center gap-2">
