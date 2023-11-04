@@ -6,7 +6,7 @@ import { AdvancedImage } from "@cloudinary/react";
 import { Outlet, useLoaderData } from "react-router-dom";
 import useUser from "./Models/useUser";
 import { useState } from "react";
-import { SetPostsHandlerContext } from "./Models/Contexts";
+import { EditContentHandlerContext } from "./Models/Contexts";
 
 const Home = () => {
   const [user, profileImg] = useUser();
@@ -43,7 +43,7 @@ const Home = () => {
         )}
 
         <section className="w-1/2 flex flex-col gap-2 items-center">
-          <SetPostsHandlerContext.Provider value={editPostHandler}>
+          <EditContentHandlerContext.Provider value={editPostHandler}>
             {posts.map((post, index) => {
               return (
                 <PostCard
@@ -54,7 +54,7 @@ const Home = () => {
                 />
               );
             })}
-          </SetPostsHandlerContext.Provider>
+          </EditContentHandlerContext.Provider>
         </section>
       </main>
       <Outlet />
