@@ -8,7 +8,7 @@ const useEditContent = (content) => {
   const [hasChanged, setHasChanged] = useState(false);
   const [text, setText] = useState(content.content);
   const [cookies] = useCookies(["session"]);
-  const setPostsHandler = useContext(EditContentHandlerContext);
+  const editContentHandlerContext = useContext(EditContentHandlerContext);
 
   const toggleEdit = () => {
     if (isEditing) {
@@ -27,7 +27,7 @@ const useEditContent = (content) => {
     const request = new Request();
     const response = await request.postReq(url, data);
     if (response) {
-      setPostsHandler(content.content_id, text);
+      editContentHandlerContext(content.content_id, text);
       toggleEdit();
     } else {
       console.log("Error editing content");
@@ -35,11 +35,17 @@ const useEditContent = (content) => {
   };
 
   const changeHandler = async (e) => {
-    if (e.target.value !== content.content) {
-      setHasChanged(true);
-      setText(e.target.value);
-    } else {
-      setHasChanged(false);
+    if (e.type === "change") {
+      if (e.target.value !== content.content) {
+        setHasChanged(true);
+        setText(e.target.value);
+      } else {
+        setHasChanged(false);
+      }
+    }
+    if (e.type === "removed") {
+      setText("[removed]");
+      editContentHandlerContext(content.content_id, "[removed]", 2);
     }
   };
 
