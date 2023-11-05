@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Home, postsLoader } from "./Pages/Home";
 import Post from "./Pages/Post";
 import LogIn from "./Pages/LogIn";
@@ -19,18 +19,24 @@ import {
 const App = () => {
   const request = new Request();
   const [cookies, , removeCookie] = useCookies(["session"]);
-  const isCookieValid = async () => {
-    if (cookies.session) {
-      const url = import.meta.env.VITE_API + "user/checkSession";
-      const authenticated = await request.postReq(url, cookies.session);
-      if (!authenticated) {
-        removeCookie("session");
+  const [isCookieValid, setIsCookieValid] = useState(false);
+
+  useEffect(() => {
+    const checkCookie = async () => {
+      if (cookies.session) {
+        const url = import.meta.env.VITE_API + "user/checkSession";
+        const data = { sessionID: cookies.session };
+        const response = await request.postReq(url, data);
+        if (!response) {
+          removeCookie("session");
+          setIsCookieValid(false);
+        } else {
+          setIsCookieValid(true);
+        }
       }
-      return authenticated;
-    }
-    removeCookie("session");
-    return false;
-  };
+    };
+    checkCookie();
+  }, [cookies.session, removeCookie]);
 
   const routers = createBrowserRouter(
     createRoutesFromElements(
@@ -38,7 +44,6 @@ const App = () => {
         <Route
           index
           loader={async () => {
-            await isCookieValid();
             return await postsLoader(cookies.session);
           }}
           element={<Home />}
@@ -46,7 +51,6 @@ const App = () => {
         <Route
           path="/reply/:post_id"
           loader={async ({ params }) => {
-            await isCookieValid();
             return await replyLoader(params.post_id, cookies.session);
           }}
           exact
@@ -55,8 +59,7 @@ const App = () => {
         <Route
           path="/post"
           loader={async () => {
-            const cookieStatus = await isCookieValid();
-            if (!cookieStatus) {
+            if (!isCookieValid) {
               return redirect("/");
             }
             return null;
@@ -67,8 +70,7 @@ const App = () => {
         <Route
           path="/logIn"
           loader={async () => {
-            const cookieStatus = await isCookieValid();
-            if (cookieStatus) {
+            if (isCookieValid) {
               return redirect("/");
             }
             return null;
@@ -79,8 +81,7 @@ const App = () => {
         <Route
           path="/signUp"
           loader={async () => {
-            const cookieStatus = await isCookieValid();
-            if (cookieStatus) {
+            if (isCookieValid) {
               return redirect("/");
             }
             return null;
