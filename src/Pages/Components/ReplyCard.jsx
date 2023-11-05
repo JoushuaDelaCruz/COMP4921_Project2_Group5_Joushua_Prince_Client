@@ -7,8 +7,11 @@ import { RepliesContext, UserContext } from "../Models/Contexts";
 import useVoteSys from "../Models/useVoteSys";
 import useEditContent from "../Models/useEditContent";
 import TextareaAutosize from "react-textarea-autosize";
+import Request from "../Models/ServerRequest";
+import { useCookies } from "react-cookie";
 
-const ReplyCard = ({ reply }) => {
+const ReplyCard = ({ reply, is_post_owner, post_id }) => {
+  const request = new Request();
   const setRepliesHandler = useContext(RepliesContext);
   const [isReply, setIsReply] = useState(false);
   const [upListener, downListener, votes, isUpVoted, isDownVoted] =
@@ -16,10 +19,28 @@ const ReplyCard = ({ reply }) => {
   const [toggleEdit, editContent, isEditing, text, changeHandler, hasChanged] =
     useEditContent(reply);
   const user = useContext(UserContext);
+  const [cookies] = useCookies(["session"]);
   const cld = new Cloudinary({
     cloud: { cloudName: import.meta.env.VITE_CLOUD_NAME },
   });
   const profileImg = cld.image(reply.profile_img);
+
+  const removeReply = async () => {
+    const url = import.meta.env.VITE_API + "post/removeReply";
+    const data = {
+      post_id: post_id,
+      reply_id: reply.content_id,
+      sessionID: cookies.session,
+    };
+    const response = await request.postReq(url, data);
+    if (response) {
+      changeHandler({ type: "removed" });
+      return;
+    } else {
+      console.log("Error removing reply");
+    }
+  };
+
   return (
     <div className="flex border-b-2 border-l-2 border-gray-100 p-1 m-1 rounded">
       <AdvancedImage
@@ -71,7 +92,7 @@ const ReplyCard = ({ reply }) => {
             </footer>
           ) : (
             <footer className="flex gap-2 items-center py-1 border-t-2 border-blue-300">
-              {user && (
+              {user && reply.is_removed === 0 && (
                 <>
                   <div className="flex items-center gap-1">
                     <button
@@ -126,6 +147,15 @@ const ReplyCard = ({ reply }) => {
                     >
                       <i className="fa-regular fa-pen-to-square fa-lg"></i>
                       <span className="text-xs font-bold"> Edit </span>
+                    </button>
+                  )}
+                  {is_post_owner && (
+                    <button
+                      className="flex items-center gap-2 p-2 mt-1 rounded-sm text-gray-400 hover:bg-gray-100 hover:text-red-600"
+                      onClick={removeReply}
+                    >
+                      <i className="fa-solid fa-text-slash fa-lg"></i>
+                      <span className="text-xs font-bold"> Remove Reply </span>
                     </button>
                   )}
                 </>
