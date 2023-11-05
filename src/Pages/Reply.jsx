@@ -21,10 +21,14 @@ const Reply = () => {
   const [replies, setReplies] = useState([]);
   const [cookies] = useCookies(["session"]);
 
-  const editPostHandler = (content_id, newContent) => {
+  const editRepliesHandler = (content_id, newContent, type) => {
     const newReplies = replies.map((reply) => {
       if (reply.content_id === content_id) {
         reply.content = newContent;
+        // type 1 = edit, type 2 = remove, type 3 = delete
+        if (type === 2) {
+          reply.is_removed = 1;
+        }
       }
       return reply;
     });
@@ -74,13 +78,15 @@ const Reply = () => {
                 <hr className="h-px bg-cyan-400 border-0 dark:bg-cyan-700 my-10" />
               </>
             )}
-            <EditContentHandlerContext.Provider value={editPostHandler}>
+            <EditContentHandlerContext.Provider value={editRepliesHandler}>
               <RepliesContext.Provider value={setReplies}>
                 <UserContext.Provider value={user}>
                   <RepliesTreeView
+                    is_post_owner={post.is_owner === 1 ? true : false}
                     replies={replies}
                     parent_id={post_id}
                     level={0}
+                    post_id={post_id}
                   />
                 </UserContext.Provider>
               </RepliesContext.Provider>
