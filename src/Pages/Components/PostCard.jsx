@@ -81,7 +81,7 @@ const PostCard = ({ post, user, isReplyPage, numReplies = null }) => {
           />
         </div>
         {isEditing && user ? (
-          <footer className="flex justify-center gap-2">
+          <footer className="flex justify-center gap-2 border-t-2 border-blue-300">
             <button
               className={
                 "flex items-center gap-2 p-2 mt-1 rounded-md text-white bg-cyan-400 hover:bg-cyan-800 " +
@@ -102,7 +102,7 @@ const PostCard = ({ post, user, isReplyPage, numReplies = null }) => {
             </button>
           </footer>
         ) : (
-          <footer className="flex">
+          <footer className="flex border-t-2 border-blue-300">
             {isReplyPage ? (
               <div className="flex items-center gap-1 p-2 ml-1 mt-1 rounded-sm text-gray-400">
                 <i className="fa-regular fa-comment fa-lg"></i>
