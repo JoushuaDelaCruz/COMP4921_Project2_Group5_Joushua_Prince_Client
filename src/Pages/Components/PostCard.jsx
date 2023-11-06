@@ -123,10 +123,12 @@ const PostCard = ({ post, user, isReplyPage, numReplies = null }) => {
                 </span>
               </Link>
             )}
-            <button className="flex items-center gap-2 p-2 mt-1 rounded-sm text-gray-400 hover:bg-gray-100">
-              <i className="fa-regular fa-bookmark fa-lg"></i>
-              <span className="text-xs font-bold"> Bookmark </span>
-            </button>
+            {user && (
+              <button className="flex items-center gap-2 p-2 mt-1 rounded-sm text-gray-400 hover:bg-gray-100">
+                <i className="fa-regular fa-bookmark fa-lg"></i>
+                <span className="text-xs font-bold"> Bookmark </span>
+              </button>
+            )}
             {post.is_owner == 1 && (
               <button className="flex items-center gap-2 p-2 mt-1 rounded-sm text-gray-400 hover:bg-gray-100 hover:text-red-600">
                 <i className="fa-regular fa-trash-can fa-lg"></i>
