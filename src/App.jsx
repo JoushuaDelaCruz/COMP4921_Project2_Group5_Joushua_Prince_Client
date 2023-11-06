@@ -37,21 +37,20 @@ const App = () => {
 
   const replyLoader = async (post_id) => {
     const sessionID = cookies.session;
-    if (sessionID) {
+    if (sessionID && isCookieValid) {
       const url =
         import.meta.env.VITE_API + "post/getPost/" + post_id + "/" + sessionID;
       const response = await getRequest(url);
       return response;
     }
     const url = import.meta.env.VITE_API + "post/getPost/" + post_id;
-    console.log(url);
     const response = await getRequest(url);
     return response;
   };
 
   const postsLoader = async () => {
     const sessionID = cookies.session;
-    if (sessionID) {
+    if (sessionID && isCookieValid) {
       const url = import.meta.env.VITE_API + "post/" + sessionID;
       const response = await getRequest(url);
       return response;
