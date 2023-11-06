@@ -5,16 +5,18 @@ import { Link } from "react-router-dom";
 import useVoteSys from "../Models/useVoteSys";
 import useEditContent from "../Models/useEditContent";
 import TextareaAutosize from "react-textarea-autosize";
+import useFavourite from "../Models/useFavourite";
 
 const PostCard = ({ post, user, isReplyPage, numReplies = null }) => {
   const [upListener, downListener, votes, isUpVoted, isDownVoted] =
     useVoteSys(post);
+  const [toggleEdit, editContent, isEditing, text, changeHandler, hasChanged] =
+    useEditContent(post);
+  const [isFavourite, toggleFavourite] = useFavourite(post);
   const cld = new Cloudinary({
     cloud: { cloudName: import.meta.env.VITE_CLOUD_NAME },
   });
   const myImage = cld.image(post.profile_img);
-  const [toggleEdit, editContent, isEditing, text, changeHandler, hasChanged] =
-    useEditContent(post);
 
   return (
     <div className="flex w-full bg-white h-fit rounded-sm">
@@ -124,9 +126,23 @@ const PostCard = ({ post, user, isReplyPage, numReplies = null }) => {
               </Link>
             )}
             {user && (
-              <button className="flex items-center gap-2 p-2 mt-1 rounded-sm text-gray-400 hover:bg-gray-100">
-                <i className="fa-regular fa-bookmark fa-lg"></i>
-                <span className="text-xs font-bold"> Bookmark </span>
+              <button
+                className={
+                  "flex items-center gap-2 p-2 mt-1 rounded-sm " +
+                  (isFavourite
+                    ? " hover:text-gray-400 text-yellow-400"
+                    : " text-gray-400 hover:text-yellow-400")
+                }
+                onClick={() => {
+                  toggleFavourite(isFavourite);
+                }}
+              >
+                <i
+                  className={
+                    (isFavourite ? "fa-solid" : "fa-regular") + " fa-star fa-lg"
+                  }
+                ></i>
+                <span className="text-xs font-bold"> Favourite </span>
               </button>
             )}
             {post.is_owner == 1 && (
