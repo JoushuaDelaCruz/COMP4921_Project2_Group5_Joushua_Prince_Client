@@ -27,12 +27,10 @@ const App = () => {
         const url = import.meta.env.VITE_API + "user/checkSession";
         const data = { sessionID: cookies.session };
         const response = await postRequest(url, data);
-        if (!response) {
-          setIsCookieValid(false);
-        } else {
-          setIsCookieValid(true);
-        }
+        setIsCookieValid(response);
+        return;
       }
+      setIsCookieValid(false);
     };
     checkCookie();
   }, [cookies.session, removeCookie]);
