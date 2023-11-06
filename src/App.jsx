@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { Home, postsLoader } from "./Pages/Home";
+import Home from "./Pages/Home";
 import Post from "./Pages/Post";
 import LogIn from "./Pages/LogIn";
 import SignUp from "./Pages/SignUp";
 import { useCookies } from "react-cookie";
-import Request from "./Pages/Models/ServerRequest";
-import { Reply, replyLoader } from "./Pages/Reply";
-import { Search, SearchLoader } from "./Pages/Search";
+import Reply from "./Pages/Reply";
+import Search from "./Pages/Search";
 import Profile from "./Pages/Profile";
 import {
   Route,
@@ -15,20 +14,20 @@ import {
   createRoutesFromElements,
   redirect,
 } from "react-router-dom";
+import useRequest from "./Pages/Models/useRequest";
 
 const App = () => {
-  const request = new Request();
   const [cookies, , removeCookie] = useCookies(["session"]);
   const [isCookieValid, setIsCookieValid] = useState(false);
+  const [getRequest, postRequest] = useRequest();
 
   useEffect(() => {
     const checkCookie = async () => {
       if (cookies.session) {
         const url = import.meta.env.VITE_API + "user/checkSession";
         const data = { sessionID: cookies.session };
-        const response = await request.postReq(url, data);
+        const response = await postRequest(url, data);
         if (!response) {
-          removeCookie("session");
           setIsCookieValid(false);
         } else {
           setIsCookieValid(true);
@@ -37,6 +36,38 @@ const App = () => {
     };
     checkCookie();
   }, [cookies.session, removeCookie]);
+
+  const replyLoader = async (post_id) => {
+    const sessionID = cookies.session;
+    if (sessionID) {
+      const url =
+        import.meta.env.VITE_API + "post/getPost/" + post_id + "/" + sessionID;
+      const response = await getRequest(url);
+      return response;
+    }
+    const url = import.meta.env.VITE_API + "post/getPost/" + post_id;
+    console.log(url);
+    const response = await getRequest(url);
+    return response;
+  };
+
+  const postsLoader = async () => {
+    const sessionID = cookies.session;
+    if (sessionID) {
+      const url = import.meta.env.VITE_API + "post/" + sessionID;
+      const response = await getRequest(url);
+      return response;
+    }
+    const url = import.meta.env.VITE_API + "post";
+    const response = await getRequest(url);
+    return response;
+  };
+
+  const SearchLoader = async (text) => {
+    const url = import.meta.env.VITE_API + "search/" + text;
+    const response = await getRequest(url);
+    return response;
+  };
 
   const routers = createBrowserRouter(
     createRoutesFromElements(
