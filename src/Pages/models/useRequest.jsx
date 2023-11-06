@@ -23,26 +23,37 @@ const useRequest = () => {
   };
 
   const getRequest = async (url, data = null) => {
-    const response = await axios.get(url, getConfig(data));
-    if (response.status === 200) {
-      return response.data;
-    }
-    if (response.status === 401) {
-      removeCookie("session");
-      alert("Invalid session");
-      return;
+    try {
+      const response = await axios.get(url, getConfig(data));
+      if (response.status === 200) {
+        return response.data;
+      }
+      if (response.status === 401) {
+        removeCookie("session");
+        alert("Invalid session");
+        return;
+      }
+    } catch (e) {
+      if (e.response.status === 401) {
+        removeCookie("session");
+      }
+      if (e.response.status === 500) {
+        alert("Internal server error. Please try again!");
+        window.location.reload();
+      }
     }
   };
 
   const postRequest = async (url, data = null) => {
-    const response = await axios.post(url, getConfig(data));
-    if (response.status === 200) {
-      return response.data;
-    }
-    if (response.status === 401) {
-      removeCookie("session");
-      alert("Invalid session");
-      return;
+    try {
+      const response = await axios.post(url, getConfig(data));
+      if (response.status === 200) {
+        return response.data;
+      }
+    } catch (e) {
+      if (e.response.status === 401) {
+        removeCookie("session");
+      }
     }
   };
 
