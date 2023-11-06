@@ -2,11 +2,12 @@ import React, { useState } from "react";
 import { Link, Outlet } from "react-router-dom";
 import { AdvancedImage } from "@cloudinary/react";
 import { useCookies } from "react-cookie";
-import Request from "../Models/ServerRequest";
+import useRequest from "../Models/useRequest";
 
 const Navbar = ({ user, image, search = "" }) => {
   const [text, setText] = useState(search);
   const [cookies, , removeCookie] = useCookies(["session"]);
+  const [, postRequest] = useRequest();
   const searchText = (e) => {
     if (e.key === "Enter") {
       window.location.href = "/search/" + text;
@@ -14,11 +15,9 @@ const Navbar = ({ user, image, search = "" }) => {
   };
 
   const logout = async () => {
-    const request = new Request();
     const url = import.meta.env.VITE_API + "user/logout";
-    const successful = await request.postReq(url, cookies.session);
+    const successful = await postRequest(url, cookies.session);
     if (successful) {
-      removeCookie("session");
       window.location.reload();
     }
   };

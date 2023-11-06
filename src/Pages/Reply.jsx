@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useLoaderData, useParams } from "react-router-dom";
 import Navbar from "./Components/Navbar";
-import Request from "./Models/ServerRequest";
 import PostCard from "./Components/PostCard";
 import InputComment from "./Components/InputComment";
 import useUser from "./Models/useUser";
@@ -12,6 +11,7 @@ import {
   EditContentHandlerContext,
 } from "./Models/Contexts";
 import { useCookies } from "react-cookie";
+import useRequest from "./Models/useRequest";
 
 const Reply = () => {
   const { post_id } = useParams();
@@ -20,6 +20,7 @@ const Reply = () => {
   const [numReplies, setNumReplies] = useState(0);
   const [replies, setReplies] = useState([]);
   const [cookies] = useCookies(["session"]);
+  const [getRequest] = useRequest();
 
   const editRepliesHandler = (content_id, newContent, type) => {
     const newReplies = replies.map((reply) => {
@@ -36,17 +37,16 @@ const Reply = () => {
   };
 
   useEffect(() => {
-    const request = new Request();
     const getReplies = async () => {
       if (cookies.session) {
         const url =
           import.meta.env.VITE_API + "reply/" + post_id + "/" + cookies.session;
-        const data = await request.getReq(url);
+        const data = await getRequest(url);
         setReplies(data);
         return;
       }
       const url = import.meta.env.VITE_API + "reply/" + post_id;
-      const data = await request.getReq(url);
+      const data = await getRequest(url);
       setReplies(data);
     };
     getReplies();
@@ -98,18 +98,4 @@ const Reply = () => {
   );
 };
 
-const replyLoader = async (post_id, sessionID) => {
-  const request = new Request();
-  if (sessionID) {
-    const url =
-      import.meta.env.VITE_API + "post/getPost/" + post_id + "/" + sessionID;
-    const response = await request.getReq(url);
-    return response;
-  }
-  const url = import.meta.env.VITE_API + "post/getPost/" + post_id;
-  console.log(url);
-  const response = await request.getReq(url);
-  return response;
-};
-
-export { Reply, replyLoader };
+export default Reply;

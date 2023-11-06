@@ -1,10 +1,13 @@
 import React, { useState } from "react";
 import Navbar from "./Components/Navbar";
 import useUser from "./Models/useUser";
-import Request from "./Models/ServerRequest";
 import TextareaAutosize from "react-textarea-autosize";
+import useRequest from "./Models/useRequest";
+import { useCookies } from "react-cookie";
 
 const Post = () => {
+  const [cookies] = useCookies();
+  const [, postRequest] = useRequest();
   const [user, profileImg] = useUser();
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
@@ -16,15 +19,13 @@ const Post = () => {
   };
 
   const submitPost = async () => {
-    const request = new Request();
     const url = import.meta.env.VITE_API + "post/create";
     const data = {
       title: title,
       content: content,
       sessionID: cookies.session,
     };
-    const response = await request.postReq(url, data);
-    console.log(response);
+    const response = await postRequest(url, data);
     if (response) {
       window.location.href = "/";
     } else {
@@ -76,7 +77,7 @@ const Post = () => {
               <button
                 type="submit"
                 className={
-                  "bg-green-500 text-white font-medium py-1 px-5 rounded opacity-50" +
+                  "bg-green-500 text-white font-medium py-1 px-5 rounded" +
                   (title ? " opacity-100" : " opacity-50")
                 }
                 onClick={submitPost}

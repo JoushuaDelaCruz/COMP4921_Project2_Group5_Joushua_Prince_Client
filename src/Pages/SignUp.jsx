@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import Authenticator from "./Models/SignUpAuthenticator";
-import Request from "./Models/ServerRequest";
+import useRequest from "./Models/useRequest";
 
 const SignUp = () => {
-  const request = new Request();
   const [auth, setAuth] = useState(null);
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [, postRequest] = useRequest();
 
   useEffect(() => {
     const createAuthenticator = async () => {
@@ -21,13 +21,13 @@ const SignUp = () => {
 
   const isUsernameExistInDB = async (username) => {
     const url = import.meta.env.VITE_API + "user/isUsernameExist";
-    const response = await request.postReq(url, username);
+    const response = await postRequest(url, username);
     return response;
   };
 
   const isEmailExistInDB = async (email) => {
     const url = import.meta.env.VITE_API + "user/isEmailExist";
-    const response = await request.postReq(url, email);
+    const response = await postRequest(url, email);
     return response;
   };
 
@@ -42,7 +42,7 @@ const SignUp = () => {
     if (isCredentialValid) {
       const url = import.meta.env.VITE_API + "user/create";
       const data = { username: username, email: email, password: password };
-      const isCreateUserSuccess = await request.postReq(url, data);
+      const isCreateUserSuccess = await postRequest(url, data);
       if (isCreateUserSuccess) {
         window.location.href = "/login";
       } else {

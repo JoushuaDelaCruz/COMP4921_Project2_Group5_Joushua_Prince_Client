@@ -1,7 +1,6 @@
 import React from "react";
 import PostCard from "./Components/PostCard";
 import Navbar from "./Components/Navbar";
-import Request from "./Models/ServerRequest";
 import { AdvancedImage } from "@cloudinary/react";
 import { Outlet, useLoaderData } from "react-router-dom";
 import useUser from "./Models/useUser";
@@ -62,16 +61,4 @@ const Home = () => {
   );
 };
 
-const postsLoader = async (sessionID) => {
-  const request = new Request();
-  if (sessionID) {
-    const url = import.meta.env.VITE_API + "post/" + sessionID;
-    const response = await request.getReq(url);
-    return response;
-  }
-  const url = import.meta.env.VITE_API + "post";
-  const response = await request.getReq(url);
-  return response;
-};
-
-export { Home, postsLoader };
+export default Home;

@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { useCookies } from "react-cookie";
-import Request from "./ServerRequest";
+import useRequest from "./useRequest";
 
 const useVoteSys = (content) => {
   const UP_VOTE = 1;
   const DOWN_VOTE = -1;
-  const request = new Request();
+  const [, postRequest] = useRequest();
   const [isUpVoted, setIsUpVoted] = useState(content.value === UP_VOTE);
   const [isDownVoted, setIsDownVoted] = useState(content.value === DOWN_VOTE);
   const [votes, setVotes] = useState(parseInt(content.num_votes));
@@ -18,7 +18,7 @@ const useVoteSys = (content) => {
       vote_orig: content.value,
       sessionID: cookies.session,
     };
-    const response = await request.postReq(url, data);
+    const response = await postRequest(url, data);
     return response;
   };
 
@@ -28,7 +28,7 @@ const useVoteSys = (content) => {
       vote_id: content.vote_id,
       sessionID: cookies.session,
     };
-    const response = await request.postReq(url, data);
+    const response = await postRequest(url, data);
     return response;
   };
 
@@ -39,7 +39,7 @@ const useVoteSys = (content) => {
       is_up_vote: is_up_vote,
       sessionID: cookies.session,
     };
-    const response = await request.postReq(url, data);
+    const response = await postRequest(url, data);
     if (response) {
       content.vote_id = response.vote_id;
       content.value = is_up_vote ? UP_VOTE : DOWN_VOTE;

@@ -1,13 +1,13 @@
 import { useState, useEffect } from "react";
 import { useCookies } from "react-cookie";
-import Request from "./ServerRequest";
+import useRequest from "./useRequest";
 import { Cloudinary } from "@cloudinary/url-gen";
 
 const useUser = () => {
-  const request = new Request();
   const [user, setUser] = useState(null);
   const [cookies, , removeCookie] = useCookies(["session"]);
   const [profileImg, setProfileImg] = useState("");
+  const [, postRequest] = useRequest();
 
   const cld = new Cloudinary({
     cloud: { cloudName: import.meta.env.VITE_CLOUD_NAME },
@@ -15,7 +15,7 @@ const useUser = () => {
   useEffect(() => {
     const getUser = async () => {
       const url = import.meta.env.VITE_API + "user";
-      const data = await request.postReq(url, cookies.session);
+      const data = await postRequest(url, cookies.session);
       if (!data) {
         setUser(null);
         removeCookie("session");

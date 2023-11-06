@@ -1,7 +1,7 @@
 import { useState, useContext } from "react";
 import { useCookies } from "react-cookie";
-import Request from "./ServerRequest";
 import { EditContentHandlerContext } from "./Contexts";
+import useRequest from "./useRequest";
 
 const useEditContent = (content) => {
   const [isEditing, setIsEditing] = useState(false);
@@ -9,6 +9,7 @@ const useEditContent = (content) => {
   const [text, setText] = useState(content.content);
   const [cookies] = useCookies(["session"]);
   const editContentHandlerContext = useContext(EditContentHandlerContext);
+  const [, postRequest] = useRequest();
 
   const toggleEdit = () => {
     if (isEditing) {
@@ -24,8 +25,7 @@ const useEditContent = (content) => {
       content: text,
       sessionID: cookies.session,
     };
-    const request = new Request();
-    const response = await request.postReq(url, data);
+    const response = await postRequest(url, data);
     if (response) {
       editContentHandlerContext(content.content_id, text);
       toggleEdit();

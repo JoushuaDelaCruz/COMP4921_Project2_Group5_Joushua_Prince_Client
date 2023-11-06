@@ -7,11 +7,11 @@ import { RepliesContext, UserContext } from "../Models/Contexts";
 import useVoteSys from "../Models/useVoteSys";
 import useEditContent from "../Models/useEditContent";
 import TextareaAutosize from "react-textarea-autosize";
-import Request from "../Models/ServerRequest";
 import { useCookies } from "react-cookie";
+import useRequest from "../Models/useRequest";
 
 const ReplyCard = ({ reply, is_post_owner, post_id }) => {
-  const request = new Request();
+  const [, postRequest] = useRequest();
   const setRepliesHandler = useContext(RepliesContext);
   const [isReply, setIsReply] = useState(false);
   const [upListener, downListener, votes, isUpVoted, isDownVoted] =
@@ -32,7 +32,7 @@ const ReplyCard = ({ reply, is_post_owner, post_id }) => {
       reply_id: reply.content_id,
       sessionID: cookies.session,
     };
-    const response = await request.postReq(url, data);
+    const response = await postRequest(url, data);
     if (response) {
       changeHandler({ type: "removed" });
       return;
