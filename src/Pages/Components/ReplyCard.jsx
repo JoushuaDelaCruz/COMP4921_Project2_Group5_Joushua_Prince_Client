@@ -9,6 +9,7 @@ import useEditContent from "../Models/useEditContent";
 import TextareaAutosize from "react-textarea-autosize";
 import { useCookies } from "react-cookie";
 import useRequest from "../Models/useRequest";
+import { Link } from "react-router-dom";
 
 const ReplyCard = ({ reply, is_post_owner, post_id }) => {
   const [, postRequest] = useRequest();
@@ -43,14 +44,21 @@ const ReplyCard = ({ reply, is_post_owner, post_id }) => {
 
   return (
     <div className="flex border-b-2 border-l-2 border-gray-100 p-1 m-1 rounded">
-      <AdvancedImage
-        cldImg={profileImg}
-        className="h-12 w-12 rounded-full border-2 border-gray-200 object-cover"
-      />
+      <Link to={"/profile/" + reply.username}>
+        <AdvancedImage
+          cldImg={profileImg}
+          className="h-12 w-12 rounded-full border-2 border-gray-200 object-cover"
+        />
+      </Link>
       <section className="flex w-full flex-col ml-2">
         <div className="flex flex-col w-full gap-1">
           <header className="flex items-center h-12 justify-between">
-            <span className="font-medium text-sm">{reply.username}</span>
+            <Link
+              to={"/profile/" + reply.username}
+              className="font-medium text-sm"
+            >
+              {reply.username}
+            </Link>
             <span className="font-semibold text-xs text-gray-500">
               {reply.date_created}
             </span>

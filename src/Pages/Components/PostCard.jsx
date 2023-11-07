@@ -46,7 +46,10 @@ const PostCard = ({ post, user, isReplyPage, numReplies = null }) => {
       </div>
       <div className="w-full p-1">
         <header className="flex items-center justify-between p-2 text-xs text-gray-400">
-          <Link to="#" className="w-fit flex items-center gap-2">
+          <Link
+            to={"/profile/" + post.username}
+            className="w-fit flex items-center gap-2"
+          >
             <AdvancedImage
               cldImg={myImage}
               className="w-8 h-8 rounded-full ring-1 ring-gray-300 overflow-hidden object-cover"
