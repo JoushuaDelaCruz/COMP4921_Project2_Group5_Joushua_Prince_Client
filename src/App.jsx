@@ -125,7 +125,7 @@ const App = () => {
           exact
           element={<Search />}
         />
-        <Route path="/profile" exact element={<Profile />} />
+        <Route path="/profile/:username" exact element={<Profile />} />
       </Route>
     )
   );
