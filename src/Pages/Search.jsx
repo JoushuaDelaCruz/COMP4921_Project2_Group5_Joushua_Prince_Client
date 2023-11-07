@@ -30,14 +30,22 @@ const Search = () => {
     getUser();
   }, []); // Add an empty dependency array to run the effect only once
 
+  // Handle button click to navigate to the "reply" route
+  const handleButtonClick = (comment_id) => {
+    window.location.href = `/reply/${comment_id}`;
+  };
+
   return (
     <>
       <Navbar user={user} image={profileImg} search={text} />
       <main className="background">
         {textResults.map((text) => (
-          <a key={text.comment_id} href={`/reply/${text.comment_id}`}>
+          <div key={text.comment_id}>
             <div>{text.content}</div>
-          </a>
+            <button onClick={() => handleButtonClick(text.comment_id)}>
+              Go to Reply
+            </button>
+          </div>
         ))}
       </main>
     </>
