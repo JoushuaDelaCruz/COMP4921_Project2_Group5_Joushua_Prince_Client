@@ -17,24 +17,28 @@ const Search = () => {
     const getUser = async () => {
       const url = import.meta.env.VITE_API + "user";
       const data = await request.postReq(url, cookies.session);
-      if (!data) {
+
+      if (data && data.profile_img) {
+        setUser(data);
+        const image = cld.image(data.profile_img);
+        setProfileImg(image);
+      } else {
         setUser(null);
         removeCookie("session");
-        return;
       }
-      setUser(data);
-      const image = cld.image(data.profile_img);
-      setProfileImg(image);
     };
     getUser();
-  });
+  }, []); // Add an empty dependency array to run the effect only once
+
   return (
     <>
       <Navbar user={user} image={profileImg} search={text} />
       <main className="background">
-        {textResults.map((text) => {
-          return <div> {text.text} </div>;
-        })}
+        {textResults.map((text) => (
+          <a key={text.comment_id} href={`/reply/${text.comment_id}`}>
+            <div>{text.content}</div>
+          </a>
+        ))}
       </main>
     </>
   );
