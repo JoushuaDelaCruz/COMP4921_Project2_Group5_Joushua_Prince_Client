@@ -20,9 +20,13 @@ const LogIn = () => {
 
   const validateCredentials = async () => {
     const validCredentials = authenticate.validateLogIn(email, password);
-    if (validCredentials) {
-      const data = { email: email, password: password };
-      await logInRequest(data);
+    if (!validCredentials) {
+      return;
+    }
+    const data = { email: email, password: password };
+    const success = await logInRequest(data);
+    if (!success) {
+      authenticate.invalidLogIn();
     }
   };
 
