@@ -6,8 +6,16 @@ import useVoteSys from "../Models/useVoteSys";
 import useEditContent from "../Models/useEditContent";
 import TextareaAutosize from "react-textarea-autosize";
 import useFavourite from "../Models/useFavourite";
+import useRequest from "../Models/useRequest";
+import { useCookies } from "react-cookie";
 
-const PostCard = ({ post, user, isReplyPage, numReplies = null }) => {
+const PostCard = ({
+  post,
+  user,
+  isReplyPage,
+  numReplies = null,
+  deletePostHandler = null,
+}) => {
   const [upListener, downListener, votes, isUpVoted, isDownVoted] =
     useVoteSys(post);
   const [toggleEdit, editContent, isEditing, text, changeHandler, hasChanged] =
@@ -17,6 +25,34 @@ const PostCard = ({ post, user, isReplyPage, numReplies = null }) => {
     cloud: { cloudName: import.meta.env.VITE_CLOUD_NAME },
   });
   const myImage = cld.image(post.profile_img);
+  const [, postRequest] = useRequest();
+  const [cookies] = useCookies(["session"]);
+
+  const deletePost = async () => {
+    const url = import.meta.env.VITE_API + "user/deleteContent";
+    const data = {
+      content_id: post.content_id,
+      sessionID: cookies.session,
+    };
+    const response = await postRequest(url, data);
+    if (response) {
+      if (isReplyPage) {
+        window.location.href = "/";
+      }
+      deletePostHandler(post.content_id);
+      return;
+    } else {
+      console.log("Error deleting post");
+    }
+  };
+
+  const formatDate = (date) => {
+    const dateObj = new Date(date);
+    const day = dateObj.getDate();
+    const month = dateObj.getMonth();
+    const year = dateObj.getFullYear();
+    return `${year}-${month}-${day}`;
+  };
 
   return (
     <div className="flex w-full bg-white h-fit rounded-sm">
@@ -67,7 +103,7 @@ const PostCard = ({ post, user, isReplyPage, numReplies = null }) => {
             Date Created:{" "}
             <span className="font-bold text-xs">
               {" "}
-              {post.date_created}{" "}
+              {formatDate(post.date_created)}{" "}
             </span>{" "}
           </span>
         </header>
@@ -149,7 +185,10 @@ const PostCard = ({ post, user, isReplyPage, numReplies = null }) => {
               </button>
             )}
             {post.is_owner == 1 && (
-              <button className="flex items-center gap-2 p-2 mt-1 rounded-sm text-gray-400 hover:bg-gray-100 hover:text-red-600">
+              <button
+                className="flex items-center gap-2 p-2 mt-1 rounded-sm text-gray-400 hover:bg-gray-100 hover:text-red-600"
+                onClick={deletePost}
+              >
                 <i className="fa-regular fa-trash-can fa-lg"></i>
                 <span className="text-xs font-bold"> Delete </span>
               </button>
