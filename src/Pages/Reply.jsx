@@ -78,19 +78,21 @@ const Reply = () => {
                 <hr className="h-px bg-cyan-400 border-0 dark:bg-cyan-700 my-10" />
               </>
             )}
-            <EditContentHandlerContext.Provider value={editRepliesHandler}>
-              <RepliesContext.Provider value={setReplies}>
-                <UserContext.Provider value={user}>
-                  <RepliesTreeView
-                    is_post_owner={post.is_owner === 1 ? true : false}
-                    replies={replies}
-                    parent_id={post_id}
-                    level={0}
-                    post_id={post_id}
-                  />
-                </UserContext.Provider>
-              </RepliesContext.Provider>
-            </EditContentHandlerContext.Provider>
+            {replies && (
+              <EditContentHandlerContext.Provider value={editRepliesHandler}>
+                <RepliesContext.Provider value={setReplies}>
+                  <UserContext.Provider value={user}>
+                    <RepliesTreeView
+                      is_post_owner={post.is_owner === 1 ? true : false}
+                      replies={replies}
+                      parent_id={post_id}
+                      level={0}
+                      post_id={post_id}
+                    />
+                  </UserContext.Provider>
+                </RepliesContext.Provider>
+              </EditContentHandlerContext.Provider>
+            )}
           </section>
         </div>{" "}
       </main>
