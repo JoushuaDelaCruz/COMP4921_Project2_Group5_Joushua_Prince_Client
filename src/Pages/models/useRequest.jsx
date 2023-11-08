@@ -68,6 +68,7 @@ const useRequest = () => {
         sameSite: "strict",
       });
     }
+    return sessionID;
   };
 
   return [getRequest, postRequest, logInRequest];
