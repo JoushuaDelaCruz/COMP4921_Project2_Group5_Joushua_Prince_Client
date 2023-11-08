@@ -26,7 +26,7 @@ const useUser = () => {
       setProfileImg(image);
     };
     getUser();
-  }, []);
+  }, [cookies.session, removeCookie]);
 
   return [user, profileImg];
 };
