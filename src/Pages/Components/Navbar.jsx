@@ -27,7 +27,7 @@ const Navbar = ({ user, image, search = "" }) => {
       return (
         <>
           <Link
-            to="/profile"
+            to={"/profile/" + user.username}
             className="flex flex-row gap-2 justify-center items-center border-2 border-slate-100 rounded-sm h-full px-1 hover:bg-slate-100"
           >
             <AdvancedImage
