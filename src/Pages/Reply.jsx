@@ -70,7 +70,9 @@ const Reply = () => {
   }, []);
 
   useEffect(() => {
-    setNumReplies(replies.length);
+    if (replies) {
+      setNumReplies(replies.length);
+    }
   }, [replies]);
 
   return (
@@ -107,7 +109,7 @@ const Reply = () => {
                 <RepliesContext.Provider value={setReplies}>
                   <UserContext.Provider value={user}>
                     <RepliesTreeView
-                      is_post_owner={posts.is_owner === 1 ? true : false}
+                      is_post_owner={posts[0].is_owner === 1 ? true : false}
                       replies={replies}
                       parent_id={post_id}
                       level={0}
