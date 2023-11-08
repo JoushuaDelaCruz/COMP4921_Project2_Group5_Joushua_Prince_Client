@@ -66,6 +66,16 @@ const App = () => {
     return response;
   };
 
+  const ProfileLoader = async (username) => {
+    if (cookies.session && isCookieValid) {
+      const url =
+        import.meta.env.VITE_API + "profile/isUserProfile/" + username;
+      const response = await getRequest(url);
+      return response;
+    }
+    return false;
+  };
+
   const routers = createBrowserRouter(
     createRoutesFromElements(
       <Route path="/">
@@ -125,7 +135,14 @@ const App = () => {
           exact
           element={<Search />}
         />
-        <Route path="/profile/:username" exact element={<Profile />} />
+        <Route
+          path="/profile/:username"
+          loader={async ({ params }) => {
+            return await ProfileLoader(params.username);
+          }}
+          exact
+          element={<Profile />}
+        />
       </Route>
     )
   );
