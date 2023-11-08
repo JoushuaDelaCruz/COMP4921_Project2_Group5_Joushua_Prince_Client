@@ -69,7 +69,11 @@ const App = () => {
   const ProfileLoader = async (username) => {
     if (cookies.session && isCookieValid) {
       const url =
-        import.meta.env.VITE_API + "profile/isUserProfile/" + username;
+        import.meta.env.VITE_API +
+        "profile/isUserProfile/" +
+        username +
+        "/" +
+        cookies.session;
       const response = await getRequest(url);
       return response;
     }
