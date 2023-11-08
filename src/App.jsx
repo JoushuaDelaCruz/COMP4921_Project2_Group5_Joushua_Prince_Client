@@ -86,14 +86,14 @@ const App = () => {
         <Route
           index
           loader={async () => {
-            return await postsLoader(cookies.session);
+            return await postsLoader();
           }}
           element={<Home />}
         />
         <Route
           path="/reply/:post_id"
           loader={async ({ params }) => {
-            return await replyLoader(params.post_id, cookies.session);
+            return await replyLoader(params.post_id);
           }}
           exact
           element={<Reply />}
@@ -134,7 +134,7 @@ const App = () => {
         <Route
           path="/search/:text"
           loader={async ({ params }) => {
-            return SearchLoader(params.text);
+            return await SearchLoader(params.text);
           }}
           exact
           element={<Search />}
