@@ -133,8 +133,8 @@ const App = () => {
         />
         <Route
           path="/search/:text"
-          loader={async ({ params }) => {
-            return await SearchLoader(params.text);
+          loader={({ params }) => {
+            return SearchLoader(params.text);
           }}
           exact
           element={<Search />}
