@@ -1,18 +1,35 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import PostCard from "./Components/PostCard";
 import Navbar from "./Components/Navbar";
-import Request from "./Models/ServerRequest";
 import { AdvancedImage } from "@cloudinary/react";
 import { Outlet, useLoaderData } from "react-router-dom";
 import useUser from "./Models/useUser";
+import { useState } from "react";
+import { EditContentHandlerContext } from "./Models/Contexts";
 
 const Home = () => {
   const [user, profileImg] = useUser();
-  const posts = useLoaderData();
-
+  const [posts, setPosts] = useState(useLoaderData());
   const redirectPost = () => {
     window.location.href = "/post";
   };
+  const editPostHandler = (content_id, newContent) => {
+    const newPosts = posts.map((post) => {
+      if (post.content_id === content_id) {
+        post.content = newContent;
+      }
+      return post;
+    });
+    setPosts(newPosts);
+  };
+
+  const deletePostHandler = (content_id) => {
+    const newPosts = posts.filter((post) => {
+      return post.content_id !== content_id;
+    });
+    setPosts(newPosts);
+  };
+
   return (
     <>
       <Navbar user={user} image={profileImg} />
@@ -33,16 +50,20 @@ const Home = () => {
         )}
 
         <section className="w-1/2 flex flex-col gap-2 items-center">
-          {posts.map((post, index) => {
-            return (
-              <PostCard
-                post={post}
-                key={index}
-                user={user}
-                isReplyPage={false}
-              />
-            );
-          })}
+          <EditContentHandlerContext.Provider value={editPostHandler}>
+            {posts &&
+              posts.map((post) => {
+                return (
+                  <PostCard
+                    deletePostHandler={deletePostHandler}
+                    post={post}
+                    key={post.content_id}
+                    user={user}
+                    isReplyPage={false}
+                  />
+                );
+              })}
+          </EditContentHandlerContext.Provider>
         </section>
       </main>
       <Outlet />
@@ -50,11 +71,4 @@ const Home = () => {
   );
 };
 
-const postsLoader = async () => {
-  const request = new Request();
-  const url = import.meta.env.VITE_API + "post";
-  const response = await request.getReq(url);
-  return response;
-};
-
-export { Home, postsLoader };
+export default Home;

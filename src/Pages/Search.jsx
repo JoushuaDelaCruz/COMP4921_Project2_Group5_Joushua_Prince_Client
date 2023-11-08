@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { useLoaderData, useParams } from "react-router-dom";
 import Navbar from "./Components/Navbar";
 import useUser from "./Models/useUser";
-import Request from "./Models/ServerRequest";
 
 const Search = () => {
   const { text } = useParams();
@@ -52,11 +51,4 @@ const Search = () => {
   );
 };
 
-const SearchLoader = async (text) => {
-  const request = new Request();
-  const url = import.meta.env.VITE_API + "search/" + text;
-  const response = await request.getReq(url);
-  return response;
-};
-
-export { Search, SearchLoader };
+export default Search;

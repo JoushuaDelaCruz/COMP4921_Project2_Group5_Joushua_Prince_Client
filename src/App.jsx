@@ -1,11 +1,12 @@
-import React from "react";
-import { Home, postsLoader } from "./Pages/Home";
+import React, { useEffect, useState } from "react";
+import Home from "./Pages/Home";
 import Post from "./Pages/Post";
 import LogIn from "./Pages/LogIn";
 import SignUp from "./Pages/SignUp";
 import { useCookies } from "react-cookie";
-import Request from "./Pages/Models/ServerRequest";
-import { Reply, replyLoader } from "./Pages/Reply";
+import Reply from "./Pages/Reply";
+import Search from "./Pages/Search";
+import Profile from "./Pages/Profile";
 import {
   Route,
   createBrowserRouter,
@@ -13,19 +14,69 @@ import {
   createRoutesFromElements,
   redirect,
 } from "react-router-dom";
-import { Search, SearchLoader } from "./Pages/Search";
+import useRequest from "./Pages/Models/useRequest";
 
 const App = () => {
-  const request = new Request();
   const [cookies, , removeCookie] = useCookies(["session"]);
+  const [isCookieValid, setIsCookieValid] = useState(false);
+  const [getRequest, postRequest] = useRequest();
 
-  const isCookieValid = async () => {
-    if (cookies.session) {
-      const url = import.meta.env.VITE_API + "user/checkSession";
-      const authenticated = await request.postReq(url, cookies.session);
-      return authenticated;
+  useEffect(() => {
+    const checkCookie = async () => {
+      if (cookies.session) {
+        const url = import.meta.env.VITE_API + "user/checkSession";
+        const data = { sessionID: cookies.session };
+        const response = await postRequest(url, data);
+        setIsCookieValid(response);
+        return;
+      }
+      setIsCookieValid(false);
+    };
+    checkCookie();
+  }, [cookies.session, removeCookie]);
+
+  const replyLoader = async (post_id) => {
+    const sessionID = cookies.session;
+    if (sessionID && isCookieValid) {
+      const url =
+        import.meta.env.VITE_API + "post/getPost/" + post_id + "/" + sessionID;
+      const response = await getRequest(url);
+      return response;
     }
-    removeCookie("session");
+    const url = import.meta.env.VITE_API + "post/getPost/" + post_id;
+    const response = await getRequest(url);
+    return response;
+  };
+
+  const postsLoader = async () => {
+    const sessionID = cookies.session;
+    if (sessionID && isCookieValid) {
+      const url = import.meta.env.VITE_API + "post/" + sessionID;
+      const response = await getRequest(url);
+      return response;
+    }
+    const url = import.meta.env.VITE_API + "post";
+    const response = await getRequest(url);
+    return response;
+  };
+
+  const SearchLoader = async (text) => {
+    const url = import.meta.env.VITE_API + "search/" + text;
+    const response = await getRequest(url);
+    return response;
+  };
+
+  const ProfileLoader = async (username) => {
+    if (cookies.session && isCookieValid) {
+      const url =
+        import.meta.env.VITE_API +
+        "profile/isUserProfile/" +
+        username +
+        "/" +
+        cookies.session;
+      const response = await getRequest(url);
+      return response;
+    }
     return false;
   };
 
@@ -35,14 +86,14 @@ const App = () => {
         <Route
           index
           loader={async () => {
-            return await postsLoader();
+            return await postsLoader(cookies.session);
           }}
           element={<Home />}
         />
         <Route
           path="/reply/:post_id"
-          loader={({ params }) => {
-            return replyLoader(params.post_id);
+          loader={async ({ params }) => {
+            return await replyLoader(params.post_id, cookies.session);
           }}
           exact
           element={<Reply />}
@@ -50,8 +101,7 @@ const App = () => {
         <Route
           path="/post"
           loader={async () => {
-            const cookieStatus = await isCookieValid();
-            if (!cookieStatus) {
+            if (!isCookieValid) {
               return redirect("/");
             }
             return null;
@@ -62,8 +112,7 @@ const App = () => {
         <Route
           path="/logIn"
           loader={async () => {
-            const cookieStatus = await isCookieValid();
-            if (cookieStatus) {
+            if (isCookieValid) {
               return redirect("/");
             }
             return null;
@@ -74,8 +123,7 @@ const App = () => {
         <Route
           path="/signUp"
           loader={async () => {
-            const cookieStatus = await isCookieValid();
-            if (cookieStatus) {
+            if (isCookieValid) {
               return redirect("/");
             }
             return null;
@@ -90,6 +138,14 @@ const App = () => {
           }}
           exact
           element={<Search />}
+        />
+        <Route
+          path="/profile/:username"
+          loader={async ({ params }) => {
+            return await ProfileLoader(params.username);
+          }}
+          exact
+          element={<Profile />}
         />
       </Route>
     )

@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import TextareaAutosize from "react-textarea-autosize";
-import Request from "../Models/ServerRequest";
 import { useCookies } from "react-cookie";
 import { redirect } from "react-router-dom";
+import useRequest from "../Models/useRequest";
 
 const InputComment = ({ parent_id, setReplies, setIsReply, username }) => {
-  const [cookies, , removeCookie] = useCookies(["session"]);
-  const request = new Request();
+  const [cookies] = useCookies(["session"]);
+  const [, postRequest] = useRequest();
   const [comment, setComment] = useState("");
   const uploadComment = async () => {
     const url = import.meta.env.VITE_API + "reply/create";
@@ -15,16 +15,15 @@ const InputComment = ({ parent_id, setReplies, setIsReply, username }) => {
       parent_id: parent_id,
       sessionID: cookies.session,
     };
-    const response = await request.postReq(url, data);
+    const response = await postRequest(url, data);
     if (response) {
       setComment("");
-      setReplies((prev) => [response, ...prev]);
+      setReplies((prev) => [...prev, response]);
       if (setIsReply) {
         setIsReply(false);
       }
     } else {
       alert("Session expired. Please log in again");
-      removeCookie("session");
       redirect("/");
     }
   };
@@ -39,6 +38,7 @@ const InputComment = ({ parent_id, setReplies, setIsReply, username }) => {
         <TextareaAutosize
           className="w-full text-base p-3 focus:outline-none focus:ring-none"
           minRows={6}
+          value={comment}
           onChange={(e) => {
             setComment(e.target.value);
           }}

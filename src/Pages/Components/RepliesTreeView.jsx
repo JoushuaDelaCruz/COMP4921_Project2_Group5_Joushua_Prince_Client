@@ -1,7 +1,13 @@
 import React from "react";
 import ReplyCard from "./ReplyCard";
 
-const RepliesTreeView = ({ replies, parent_id, level }) => {
+const RepliesTreeView = ({
+  replies,
+  parent_id,
+  is_post_owner,
+  level,
+  post_id,
+}) => {
   return (
     <div
       className={"flex flex-col justify-center " + level === 0 ? "gap-3" : ""}
@@ -14,11 +20,17 @@ const RepliesTreeView = ({ replies, parent_id, level }) => {
             className="flex flex-col gap-1"
             style={{ marginLeft: level * 1 + "em" }}
           >
-            <ReplyCard reply={reply} />
+            <ReplyCard
+              reply={reply}
+              is_post_owner={is_post_owner}
+              post_id={post_id}
+            />
             <RepliesTreeView
+              is_post_owner={is_post_owner}
               replies={replies}
               parent_id={reply.content_id}
               level={level + 1}
+              post_id={post_id}
             />
           </div>
         ))}

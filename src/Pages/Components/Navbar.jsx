@@ -1,31 +1,53 @@
 import React, { useState } from "react";
 import { Link, Outlet } from "react-router-dom";
 import { AdvancedImage } from "@cloudinary/react";
-import { redirect } from "react-router-dom";
+import { useCookies } from "react-cookie";
+import useRequest from "../Models/useRequest";
 
 const Navbar = ({ user, image, search = "" }) => {
   const [text, setText] = useState(search);
+  const [cookies, , removeCookie] = useCookies(["session"]);
+  const [, postRequest] = useRequest();
   const searchText = (e) => {
     if (e.key === "Enter") {
       window.location.href = "/search/" + text;
     }
   };
 
+  const logout = async () => {
+    const url = import.meta.env.VITE_API + "user/logout";
+    const successful = await postRequest(url, cookies.session);
+    removeCookie("session");
+    if (successful) {
+      window.location.reload();
+    }
+  };
+
   const RightSidebar = () => {
     if (user) {
       return (
-        <a
-          href="#"
-          className="flex flex-row gap-2 justify-center items-center border-2 border-slate-100 rounded-sm h-full px-1"
-        >
-          <AdvancedImage
-            cldImg={image}
-            className="h-10 w-12 rounded-md object-cover"
-          />
-          <span className="text-xs font-medium text-slate-700 w-12 min-w-18 text-center">
-            {user.username}
-          </span>
-        </a>
+        <>
+          <Link
+            to={"/profile/" + user.username}
+            className="flex flex-row gap-2 justify-center items-center border-2 border-slate-100 rounded-sm h-full px-1 hover:bg-slate-100"
+          >
+            <AdvancedImage
+              cldImg={image}
+              className="h-11 w-12 rounded-md object-cover"
+            />
+            <span className="text-sm font-medium text-slate-700 w-fit text-center">
+              {user.username}
+            </span>
+          </Link>
+          <button
+            type="button"
+            className="flex flex-row text-sm gap-2 font-semibold justify-center items-center h-fit px-2 py-3 ml-2 rounded-md hover:bg-gray-100"
+            onClick={logout}
+          >
+            {" "}
+            Logout{" "}
+          </button>
+        </>
       );
     } else {
       return (
@@ -61,7 +83,7 @@ const Navbar = ({ user, image, search = "" }) => {
             <div className="flex space-x-4 justify-center content-center">
               <Link
                 to="/"
-                className="flex justify-center items-center align-middle content-center flex-wrap h-full pl-2"
+                className="flex justify-center items-center align-middle content-center flex-wrap h-full rounded-md pl-2 hover:bg-slate-100"
               >
                 <i className="fa-solid fa-house fs-2xl"></i>
                 <span
