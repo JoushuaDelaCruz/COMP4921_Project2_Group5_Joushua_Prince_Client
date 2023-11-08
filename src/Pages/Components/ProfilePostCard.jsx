@@ -58,7 +58,7 @@ const ProfilePostCard = ({ post }) => {
       )}
       <div className="flex flex-col w-full">
         <header className="flex justify-between py-1 items-center mr-4">
-          <h2 className="font-semibold text-lg">{post.title}</h2>
+          <h2 className="font-semibold text-lg py-2">{post.title}</h2>
           <h3 className="text-gray-500 text-xs font-light">
             {" "}
             {formatDate(post.date_created)}{" "}
@@ -67,7 +67,7 @@ const ProfilePostCard = ({ post }) => {
         <div className="text-sm py-1 leading-snug h-12 pl-2">
           {shortenContent(post.content)}
         </div>
-        <footer className="flex py-2 gap-2">
+        <footer className="flex py-3 gap-2">
           <div className="flex items-center gap-1 ml-1 mt-1 rounded-sm text-gray-400">
             <i className="fa-regular fa-comment fa-lg"></i>
             <span className="text-xs font-bold">
