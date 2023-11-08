@@ -15,6 +15,7 @@ import {
   redirect,
 } from "react-router-dom";
 import useRequest from "./Pages/Models/useRequest";
+import PageNotFound from "./Pages/PageNotFound";
 
 const App = () => {
   const [cookies, , removeCookie] = useCookies(["session"]);
@@ -147,6 +148,7 @@ const App = () => {
           exact
           element={<Profile />}
         />
+        <Route path="*" element={<PageNotFound />} />
       </Route>
     )
   );
