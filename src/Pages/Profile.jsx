@@ -81,10 +81,12 @@ const Profile = () => {
         <section className="flex flex-col w-3/4 p-2 my-10 gap-2">
           <header className="flex flex-col bg-white py-4 px-6 rounded-sm">
             <div className="flex items-center gap-3">
-              <AdvancedImage
-                cldImg={userProfileImg}
-                className="w-16 h-16 rounded-full ring-1 ring-gray-300 overflow-hidden object-cover"
-              />
+              {userProfileImg && (
+                <AdvancedImage
+                  cldImg={userProfileImg}
+                  className="w-16 h-16 rounded-full ring-1 ring-gray-300 overflow-hidden object-cover"
+                />
+              )}
               <h1 className="border-b-2 border-cyan-400 w-full text-lg font-light capitalize">
                 {userProfileName}
               </h1>
