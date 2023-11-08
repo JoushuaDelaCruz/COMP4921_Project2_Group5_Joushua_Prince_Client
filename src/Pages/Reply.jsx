@@ -16,7 +16,9 @@ import useRequest from "./Models/useRequest";
 const Reply = () => {
   const { post_id } = useParams();
   const [user, profileImg] = useUser();
-  const [post] = useLoaderData();
+  // Although posts is only one, I don't know why but when editing it does not update automatically.
+  // This is because mutability. So I have to use a list of posts...
+  const [posts, setPosts] = useState(useLoaderData());
   const [numReplies, setNumReplies] = useState(0);
   const [replies, setReplies] = useState([]);
   const [cookies] = useCookies(["session"]);
@@ -34,6 +36,21 @@ const Reply = () => {
       return reply;
     });
     setReplies(newReplies);
+  };
+
+  const postEditHandler = (content_id, newContent, type) => {
+    const newPosts = posts.map((post) => {
+      if (post.content_id === content_id) {
+        post.content = newContent;
+        // type 1 = edit, type 2 = remove, type 3 = delete
+        if (type === 2) {
+          post.is_removed = 1;
+        }
+      }
+      return post;
+    });
+    setPosts(newPosts);
+    return;
   };
 
   useEffect(() => {
@@ -61,12 +78,19 @@ const Reply = () => {
       <Navbar user={user} image={profileImg} />
       <main className="flex justify-center background">
         <div className="w-3/5 my-6 rounded-md p-2">
-          <PostCard
-            post={post}
-            isReplyPage={true}
-            user={user}
-            numReplies={numReplies}
-          />
+          <EditContentHandlerContext.Provider value={postEditHandler}>
+            {posts &&
+              posts.map((post) => {
+                return (
+                  <PostCard
+                    post={post}
+                    isReplyPage={true}
+                    user={user}
+                    numReplies={numReplies}
+                  />
+                );
+              })}
+          </EditContentHandlerContext.Provider>
           <section className="w-full rounded-sm my-2 px-12 pt-5 pb-1  bg-white">
             {user && (
               <>
@@ -83,7 +107,7 @@ const Reply = () => {
                 <RepliesContext.Provider value={setReplies}>
                   <UserContext.Provider value={user}>
                     <RepliesTreeView
-                      is_post_owner={post.is_owner === 1 ? true : false}
+                      is_post_owner={posts.is_owner === 1 ? true : false}
                       replies={replies}
                       parent_id={post_id}
                       level={0}
