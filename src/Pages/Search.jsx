@@ -31,8 +31,8 @@ const Search = () => {
   }, []); // Add an empty dependency array to run the effect only once
 
   // Handle button click to navigate to the "reply" route
-  const handleButtonClick = (comment_id) => {
-    window.location.href = `/reply/${comment_id}`;
+  const handleButtonClick = (parent_id) => {
+    window.location.href = `/reply/${parent_id}`;
   };
 
   return (
@@ -40,10 +40,10 @@ const Search = () => {
       <Navbar user={user} image={profileImg} search={text} />
       <main className="background">
         {textResults.map((text) => (
-          <div key={text.comment_id}>
+          <div key={text.parent_id}>
             <div>{text.content}</div>
-            <button onClick={() => handleButtonClick(text.comment_id)}>
-              Go to Reply
+            <button onClick={() => handleButtonClick(text.parent_id)}>
+              Go to thread
             </button>
           </div>
         ))}
