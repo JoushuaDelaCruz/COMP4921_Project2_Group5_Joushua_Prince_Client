@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import PostCard from "./Components/PostCard";
 import Navbar from "./Components/Navbar";
 import { AdvancedImage } from "@cloudinary/react";
@@ -22,6 +22,14 @@ const Home = () => {
     });
     setPosts(newPosts);
   };
+
+  const deletePostHandler = (content_id) => {
+    const newPosts = posts.filter((post) => {
+      return post.content_id !== content_id;
+    });
+    setPosts(newPosts);
+  };
+
   return (
     <>
       <Navbar user={user} image={profileImg} />
@@ -44,11 +52,12 @@ const Home = () => {
         <section className="w-1/2 flex flex-col gap-2 items-center">
           <EditContentHandlerContext.Provider value={editPostHandler}>
             {posts &&
-              posts.map((post, index) => {
+              posts.map((post) => {
                 return (
                   <PostCard
+                    deletePostHandler={deletePostHandler}
                     post={post}
-                    key={index}
+                    key={post.content_id}
                     user={user}
                     isReplyPage={false}
                   />
