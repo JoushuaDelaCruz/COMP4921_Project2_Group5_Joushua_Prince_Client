@@ -40,6 +40,7 @@ const useEditContent = (content) => {
         setHasChanged(true);
         setText(e.target.value);
       } else {
+        setText(e.target.value);
         setHasChanged(false);
       }
     }
