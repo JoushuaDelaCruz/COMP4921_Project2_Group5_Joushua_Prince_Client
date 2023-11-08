@@ -33,7 +33,7 @@ const Home = () => {
   return (
     <>
       <Navbar user={user} image={profileImg} />
-      <main className="background flex flex-col items-center content-center pt-6 gap-4">
+      <main className="background flex flex-col items-center content-center py-6 gap-4">
         {user && (
           <section className="w-1/2 bg-white h-16 flex align-middle content-center flex-wrap p-2 gap-2 rounded-md">
             <AdvancedImage
