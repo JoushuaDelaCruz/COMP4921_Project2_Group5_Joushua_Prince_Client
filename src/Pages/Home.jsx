@@ -43,16 +43,17 @@ const Home = () => {
 
         <section className="w-1/2 flex flex-col gap-2 items-center">
           <EditContentHandlerContext.Provider value={editPostHandler}>
-            {posts.map((post, index) => {
-              return (
-                <PostCard
-                  post={post}
-                  key={index}
-                  user={user}
-                  isReplyPage={false}
-                />
-              );
-            })}
+            {posts &&
+              posts.map((post, index) => {
+                return (
+                  <PostCard
+                    post={post}
+                    key={index}
+                    user={user}
+                    isReplyPage={false}
+                  />
+                );
+              })}
           </EditContentHandlerContext.Provider>
         </section>
       </main>
