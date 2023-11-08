@@ -31,15 +31,23 @@ const useRequest = () => {
       if (response.status === 401) {
         removeCookie("session");
         alert("Invalid session");
+        window.location.href = "/404";
         return;
+      }
+      if (response.status === 403 || response.status === 404) {
+        window.location.href = "/404";
       }
     } catch (e) {
       if (e.response.status === 401) {
         removeCookie("session");
+        window.location.href = "/404";
       }
       if (e.response.status === 500) {
         alert("Internal server error. Please try again!");
         window.location.reload();
+      }
+      if (e.response.status === 403 || e.response.status === 404) {
+        window.location.href = "/404";
       }
     }
   };
@@ -50,9 +58,20 @@ const useRequest = () => {
       if (response.status === 200) {
         return response.data;
       }
+      if (response.status === 403 || response.status === 404) {
+        window.location.href = "/404";
+      }
     } catch (e) {
       if (e.response.status === 401) {
         removeCookie("session");
+        window.location.href = "/404";
+      }
+      if (e.response.status === 403 || e.response.status === 404) {
+        window.location.href = "/404";
+      }
+      if (e.response.status === 500) {
+        alert("Internal server error. Please try again!");
+        window.location.reload();
       }
     }
   };
