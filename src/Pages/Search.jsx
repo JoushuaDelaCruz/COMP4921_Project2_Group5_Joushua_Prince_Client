@@ -43,7 +43,7 @@ const Search = () => {
           <div key={text.parent_id}>
             <div>{text.content}</div>
             <button onClick={() => handleButtonClick(text.parent_id)}>
-              Go to thread
+              Go to main thread
             </button>
           </div>
         ))}
