@@ -2,13 +2,13 @@ import React from "react";
 import { AdvancedImage } from "@cloudinary/react";
 import { Cloudinary } from "@cloudinary/url-gen";
 import { Link } from "react-router-dom";
-import useVoteSys from "../Models/useVoteSys";
-import useEditContent from "../Models/useEditContent";
+import useVoteSys from "../Customs/useVoteSys";
+import useEditContent from "../Customs/useEditContent";
 import TextareaAutosize from "react-textarea-autosize";
-import useFavourite from "../Models/useFavourite";
-import useRequest from "../Models/useRequest";
+import useFavourite from "../Customs/useFavourite";
+import useRequest from "../Customs/useRequest";
 import { useCookies } from "react-cookie";
-import useDateFormat from "../Models/useDateFormat";
+import useDateFormat from "../Customs/useDateFormat";
 
 const PostCard = ({
   post,

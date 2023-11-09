@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import useUser from "./Models/useUser";
+import useUser from "./Customs/useUser";
 import Navbar from "./Components/Navbar";
 import { useLoaderData, useParams } from "react-router-dom";
-import useRequest from "./Models/useRequest";
+import useRequest from "./Customs/useRequest";
 import { Cloudinary } from "@cloudinary/url-gen";
 import { AdvancedImage } from "@cloudinary/react";
 import ProfilePostCard from "./Components/ProfilePostCard";

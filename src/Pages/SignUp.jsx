@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import Authenticator from "./Models/SignUpAuthenticator";
-import useRequest from "./Models/useRequest";
+import Authenticator from "./Customs/SignUpAuthenticator";
+import useRequest from "./Customs/useRequest";
 
 const SignUp = () => {
   const [auth, setAuth] = useState(null);

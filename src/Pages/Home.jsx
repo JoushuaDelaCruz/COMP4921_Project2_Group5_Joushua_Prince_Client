@@ -3,9 +3,9 @@ import PostCard from "./Components/PostCard";
 import Navbar from "./Components/Navbar";
 import { AdvancedImage } from "@cloudinary/react";
 import { Outlet, useLoaderData } from "react-router-dom";
-import useUser from "./Models/useUser";
+import useUser from "./Customs/useUser";
 import { useState } from "react";
-import { EditContentHandlerContext } from "./Models/Contexts";
+import { EditContentHandlerContext } from "./Customs/Contexts";
 
 const Home = () => {
   const [user, profileImg] = useUser();

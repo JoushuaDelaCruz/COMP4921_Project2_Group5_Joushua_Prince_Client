@@ -1,7 +1,7 @@
 import React from "react";
 import { AdvancedImage } from "@cloudinary/react";
 import { Cloudinary } from "@cloudinary/url-gen";
-import useRequest from "../Models/useRequest";
+import useRequest from "../Customs/useRequest";
 
 const SearchCard = ({ content }) => {
   const cld = new Cloudinary({

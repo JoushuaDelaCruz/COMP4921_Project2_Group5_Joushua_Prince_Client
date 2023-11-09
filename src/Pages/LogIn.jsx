@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import Authenticator from "./Models/LogInAuthenticator";
-import useRequest from "./Models/useRequest";
+import Authenticator from "./Customs/LogInAuthenticator";
+import useRequest from "./Customs/useRequest";
 
 const LogIn = () => {
   const [, , logInRequest] = useRequest();

@@ -3,14 +3,14 @@ import InputComment from "./InputComment";
 import { Cloudinary } from "@cloudinary/url-gen";
 import { AdvancedImage } from "@cloudinary/react";
 import { useContext } from "react";
-import { RepliesContext, UserContext } from "../Models/Contexts";
-import useVoteSys from "../Models/useVoteSys";
-import useEditContent from "../Models/useEditContent";
+import { RepliesContext, UserContext } from "../Customs/Contexts";
+import useVoteSys from "../Customs/useVoteSys";
+import useEditContent from "../Customs/useEditContent";
 import TextareaAutosize from "react-textarea-autosize";
 import { useCookies } from "react-cookie";
-import useRequest from "../Models/useRequest";
+import useRequest from "../Customs/useRequest";
 import { Link } from "react-router-dom";
-import useDateFormat from "../Models/useDateFormat";
+import useDateFormat from "../Customs/useDateFormat";
 
 const ReplyCard = ({ reply, is_post_owner, post_id }) => {
   const [, postRequest] = useRequest();

@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import useDateFormat from "../Models/useDateFormat";
+import useDateFormat from "../Customs/useDateFormat";
 
 const ProfileBookmarkCard = ({ bookmark }) => {
   const [relativeTime] = useDateFormat(bookmark.date_created);

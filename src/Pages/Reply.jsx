@@ -3,15 +3,15 @@ import { useLoaderData, useParams } from "react-router-dom";
 import Navbar from "./Components/Navbar";
 import PostCard from "./Components/PostCard";
 import InputComment from "./Components/InputComment";
-import useUser from "./Models/useUser";
+import useUser from "./Customs/useUser";
 import RepliesTreeView from "./Components/RepliesTreeView";
 import {
   UserContext,
   RepliesContext,
   EditContentHandlerContext,
-} from "./Models/Contexts";
+} from "./Customs/Contexts";
 import { useCookies } from "react-cookie";
-import useRequest from "./Models/useRequest";
+import useRequest from "./Customs/useRequest";
 
 const Reply = () => {
   const { post_id } = useParams();

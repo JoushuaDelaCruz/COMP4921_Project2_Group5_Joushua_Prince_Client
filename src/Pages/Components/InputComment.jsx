@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import TextareaAutosize from "react-textarea-autosize";
 import { useCookies } from "react-cookie";
 import { redirect } from "react-router-dom";
-import useRequest from "../Models/useRequest";
+import useRequest from "../Customs/useRequest";
 
 const InputComment = ({ parent_id, setReplies, setIsReply, username }) => {
   const [cookies] = useCookies(["session"]);

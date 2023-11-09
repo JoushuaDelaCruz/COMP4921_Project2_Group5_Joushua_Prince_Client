@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useLoaderData, useParams } from "react-router-dom";
 import Navbar from "./Components/Navbar";
-import useUser from "./Models/useUser";
+import useUser from "./Customs/useUser";
 import SearchCard from "./Components/SearchCard";
 
 const Search = () => {

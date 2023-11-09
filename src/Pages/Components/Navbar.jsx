@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link, Outlet } from "react-router-dom";
 import { AdvancedImage } from "@cloudinary/react";
 import { useCookies } from "react-cookie";
-import useRequest from "../Models/useRequest";
+import useRequest from "../Customs/useRequest";
 
 const Navbar = ({ user, image, search = "" }) => {
   const [text, setText] = useState(search);

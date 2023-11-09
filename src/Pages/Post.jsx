@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import Navbar from "./Components/Navbar";
-import useUser from "./Models/useUser";
+import useUser from "./Customs/useUser";
 import TextareaAutosize from "react-textarea-autosize";
-import useRequest from "./Models/useRequest";
+import useRequest from "./Customs/useRequest";
 import { useCookies } from "react-cookie";
 
 const Post = () => {
