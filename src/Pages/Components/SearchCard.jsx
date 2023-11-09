@@ -2,6 +2,7 @@ import React from "react";
 import { AdvancedImage } from "@cloudinary/react";
 import { Cloudinary } from "@cloudinary/url-gen";
 import useRequest from "../Customs/useRequest";
+import useRelativeTime from "../Customs/useRelativeTime";
 
 const SearchCard = ({ content }) => {
   const cld = new Cloudinary({
@@ -9,14 +10,7 @@ const SearchCard = ({ content }) => {
   });
   const myImage = cld.image(content.profile_img);
   const [getRequest] = useRequest();
-
-  const formatDate = (date) => {
-    const dateObj = new Date(date);
-    const day = dateObj.getDate();
-    const month = dateObj.getMonth();
-    const year = dateObj.getFullYear();
-    return `${year}-${month}-${day}`;
-  };
+  const [relativeTime] = useRelativeTime();
 
   const formatContent = (content) => {
     if (content.length > 250) {
@@ -54,9 +48,7 @@ const SearchCard = ({ content }) => {
             </span>{" "}
           </h1>
         </div>
-        <span className="text-xs">
-          Date Created: {formatDate(content.date_created)}
-        </span>
+        <span className="text-xs">Date Created: {relativeTime}</span>
       </header>
       <p className="text-sm py-3">{formatContent(content.content)}</p>
       <footer className="flex items-center py-2 gap-3"></footer>
