@@ -10,9 +10,11 @@ import TextareaAutosize from "react-textarea-autosize";
 import { useCookies } from "react-cookie";
 import useRequest from "../Models/useRequest";
 import { Link } from "react-router-dom";
+import useDateFormat from "../Models/useDateFormat";
 
 const ReplyCard = ({ reply, is_post_owner, post_id }) => {
   const [, postRequest] = useRequest();
+  const [relativeTime] = useDateFormat(reply.date_created);
   const setRepliesHandler = useContext(RepliesContext);
   const [isReply, setIsReply] = useState(false);
   const [upListener, downListener, votes, isUpVoted, isDownVoted] =
@@ -60,9 +62,10 @@ const ReplyCard = ({ reply, is_post_owner, post_id }) => {
               {reply.username}
             </Link>
             <span className="font-semibold text-xs text-gray-500">
-              {reply.date_created}
+              {relativeTime}
             </span>
           </header>
+
           <div className="text-base align-middle subpixel-antialiased py-1">
             <TextareaAutosize
               type="text"
@@ -138,7 +141,7 @@ const ReplyCard = ({ reply, is_post_owner, post_id }) => {
                     <i className="fa-regular fa-comment fa-lg"></i>
                     <span className="text-xs font-bold"> Reply </span>
                   </button>
-                  {reply.is_owner == 1 && (
+                  {reply.is_owner == 1 && user && (
                     <button
                       className=" flex items-center gap-2 p-2 mt-1 rounded-sm text-gray-400 hover:bg-gray-100 hover:text-cyan-600"
                       onClick={toggleEdit}
@@ -147,7 +150,7 @@ const ReplyCard = ({ reply, is_post_owner, post_id }) => {
                       <span className="text-xs font-bold"> Edit </span>
                     </button>
                   )}
-                  {is_post_owner && (
+                  {is_post_owner && user && (
                     <button
                       className="flex items-center gap-2 p-2 mt-1 rounded-sm text-gray-400 hover:bg-gray-100 hover:text-red-600"
                       onClick={removeReply}

@@ -8,6 +8,7 @@ import TextareaAutosize from "react-textarea-autosize";
 import useFavourite from "../Models/useFavourite";
 import useRequest from "../Models/useRequest";
 import { useCookies } from "react-cookie";
+import useDateFormat from "../Models/useDateFormat";
 
 const PostCard = ({
   post,
@@ -27,6 +28,7 @@ const PostCard = ({
   const myImage = cld.image(post.profile_img);
   const [, postRequest] = useRequest();
   const [cookies] = useCookies(["session"]);
+  const [relativeTime] = useDateFormat(post.date_created);
 
   const deletePost = async () => {
     const url = import.meta.env.VITE_API + "user/deleteContent";
@@ -45,15 +47,6 @@ const PostCard = ({
       console.log("Error deleting post");
     }
   };
-
-  const formatDate = (date) => {
-    const dateObj = new Date(date);
-    const day = dateObj.getDate();
-    const month = dateObj.getMonth();
-    const year = dateObj.getFullYear();
-    return `${year}-${month}-${day}`;
-  };
-
   return (
     <div className="flex w-full bg-white h-fit rounded-sm">
       <div className="w-12 flex flex-col items-center content-center bg-blue-100 gap-3 rounded-l">
@@ -98,14 +91,7 @@ const PostCard = ({
               </span>{" "}
             </span>
           </Link>
-          <span className="flex items-center text-sm gap-2">
-            {" "}
-            Date Created:{" "}
-            <span className="font-bold text-xs">
-              {" "}
-              {formatDate(post.date_created)}{" "}
-            </span>{" "}
-          </span>
+          <span className="font-bold text-xs mr-2">{relativeTime}</span>
         </header>
         <div className="p-2">
           <h2 className="text-xl font-semibold mb-3"> {post.title} </h2>
@@ -184,7 +170,7 @@ const PostCard = ({
                 <span className="text-xs font-bold"> Favourite </span>
               </button>
             )}
-            {post.is_owner == 1 && (
+            {post.is_owner == 1 && user && (
               <button
                 className="flex items-center gap-2 p-2 mt-1 rounded-sm text-gray-400 hover:bg-gray-100 hover:text-red-600"
                 onClick={deletePost}
@@ -193,7 +179,7 @@ const PostCard = ({
                 <span className="text-xs font-bold"> Delete </span>
               </button>
             )}
-            {post.is_owner == 1 && (
+            {post.is_owner == 1 && user && (
               <button
                 className=" flex items-center gap-2 p-2 mt-1 rounded-sm text-gray-400 hover:bg-gray-100 hover:text-cyan-600"
                 onClick={toggleEdit}

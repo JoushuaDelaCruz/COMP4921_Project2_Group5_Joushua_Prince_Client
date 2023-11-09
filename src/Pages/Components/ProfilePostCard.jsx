@@ -1,14 +1,9 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import useDateFormat from "../Models/useDateFormat";
 
 const ProfilePostCard = ({ post }) => {
-  const formatDate = (date) => {
-    const dateObj = new Date(date);
-    const day = dateObj.getDate();
-    const month = dateObj.getMonth();
-    const year = dateObj.getFullYear();
-    return `${year}-${month}-${day}`;
-  };
+  const [relativeTime] = useDateFormat(post.date_created);
 
   const shortenContent = (content) => {
     const maxLen = 200;
@@ -59,10 +54,7 @@ const ProfilePostCard = ({ post }) => {
       <div className="flex flex-col w-full">
         <header className="flex justify-between py-1 items-center mr-4">
           <h2 className="font-semibold text-lg py-2">{post.title}</h2>
-          <h3 className="text-gray-500 text-xs font-light">
-            {" "}
-            {formatDate(post.date_created)}{" "}
-          </h3>
+          <h3 className="text-gray-500 text-xs font-light"> {relativeTime} </h3>
         </header>
         <div className="text-sm py-1 leading-snug h-12 pl-2">
           {shortenContent(post.content)}
