@@ -26,15 +26,13 @@ const SearchCard = ({ content }) => {
   };
 
   const findParent = async () => {
-    console.log("I have been clicked");
-    // Uncomment this out. When you implement it. Also this assumes that the response is the parent_id
-
-    // const url = import.meta.env.VITE_API + "post/getPost/" + content.parent_id;
-    // const response = await getRequest(url);
-    // if (response) {
-    //   window.location.href = "/post/" + response;
-    // }
-    // return response;
+    const url =
+      import.meta.env.VITE_API + "search/getParent/" + content.content_id;
+    const response = await getRequest(url);
+    if (response) {
+      window.location.href = "/reply/" + response.content_id;
+    }
+    return response;
   };
 
   return (
