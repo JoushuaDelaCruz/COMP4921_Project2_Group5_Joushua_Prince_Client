@@ -94,18 +94,18 @@ const Reply = () => {
                 );
               })}
           </EditContentHandlerContext.Provider>
-          <section className="w-full rounded-sm my-2 px-12 pt-5 pb-1  bg-white">
-            {user && (
-              <>
-                <InputComment
-                  parent_id={post_id}
-                  setReplies={setReplies}
-                  username={user.username}
-                />
-                <hr className="h-px bg-cyan-400 border-0 dark:bg-cyan-700 my-10" />
-              </>
-            )}
-            {replies && (
+          {(replies === undefined || user) && (
+            <section className="w-full rounded-sm my-2 px-12 pt-5 pb-1  bg-white">
+              {user && (
+                <>
+                  <InputComment
+                    parent_id={post_id}
+                    setReplies={setReplies}
+                    username={user.username}
+                  />
+                  <hr className="h-px bg-cyan-400 border-0 dark:bg-cyan-700 my-10" />
+                </>
+              )}
               <EditContentHandlerContext.Provider value={editRepliesHandler}>
                 <RepliesContext.Provider value={setReplies}>
                   <UserContext.Provider value={user}>
@@ -119,8 +119,8 @@ const Reply = () => {
                   </UserContext.Provider>
                 </RepliesContext.Provider>
               </EditContentHandlerContext.Provider>
-            )}
-          </section>
+            </section>
+          )}
         </div>{" "}
       </main>
     </>
