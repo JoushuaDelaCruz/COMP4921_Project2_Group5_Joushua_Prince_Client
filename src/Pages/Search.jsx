@@ -16,11 +16,7 @@ const Search = () => {
         <section className="flex flex-col w-1/2 h-fit">
           {textResults &&
             textResults.map((content) => {
-              return (
-                <a href={`/reply/${content.parent_id}`} key={content.parent_id}>
-                  <SearchCard content={content} />
-                </a>
-              );
+              return <SearchCard key={content.content_id} content={content} />;
             })}
         </section>
       </main>

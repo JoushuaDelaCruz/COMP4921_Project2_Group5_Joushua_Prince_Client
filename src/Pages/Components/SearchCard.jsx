@@ -2,7 +2,7 @@ import React from "react";
 import { AdvancedImage } from "@cloudinary/react";
 import { Cloudinary } from "@cloudinary/url-gen";
 import useRequest from "../Customs/useRequest";
-import useRelativeTime from "../Customs/useRelativeTime";
+import useRelativeTime from "../Customs/useDateFormat";
 
 const SearchCard = ({ content }) => {
   const cld = new Cloudinary({
@@ -10,7 +10,7 @@ const SearchCard = ({ content }) => {
   });
   const myImage = cld.image(content.profile_img);
   const [getRequest] = useRequest();
-  const [relativeTime] = useRelativeTime();
+  const [relativeTime] = useRelativeTime(content.date_created);
 
   const formatContent = (content) => {
     if (content.length > 250) {
