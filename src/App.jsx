@@ -7,6 +7,8 @@ import { useCookies } from "react-cookie";
 import Reply from "./Pages/Reply";
 import Search from "./Pages/Search";
 import Profile from "./Pages/Profile";
+import useRequest from "./Pages/Models/useRequest";
+import PageNotFound from "./Pages/PageNotFound";
 import {
   Route,
   createBrowserRouter,
@@ -14,8 +16,6 @@ import {
   createRoutesFromElements,
   redirect,
 } from "react-router-dom";
-import useRequest from "./Pages/Models/useRequest";
-import PageNotFound from "./Pages/PageNotFound";
 
 const App = () => {
   const [cookies, , removeCookie] = useCookies(["session"]);
