@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import PostCard from "./Components/PostCard";
 import Navbar from "./Components/Navbar";
 import { AdvancedImage } from "@cloudinary/react";
@@ -10,9 +10,11 @@ import { EditContentHandlerContext } from "./Customs/Contexts";
 const Home = () => {
   const [user, profileImg] = useUser();
   const [posts, setPosts] = useState(useLoaderData());
+
   const redirectPost = () => {
-    window.location.href = "/post";
+    window.location.href = "./post";
   };
+
   const editPostHandler = (content_id, newContent) => {
     const newPosts = posts.map((post) => {
       if (post.content_id === content_id) {
