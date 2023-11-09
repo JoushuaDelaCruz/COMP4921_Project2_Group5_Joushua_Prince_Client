@@ -85,6 +85,7 @@ const Reply = () => {
               posts.map((post) => {
                 return (
                   <PostCard
+                    key={post.content_id}
                     post={post}
                     isReplyPage={true}
                     user={user}
