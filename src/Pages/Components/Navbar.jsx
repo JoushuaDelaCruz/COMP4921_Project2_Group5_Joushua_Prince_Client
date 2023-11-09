@@ -17,9 +17,8 @@ const Navbar = ({ user, image, search = "" }) => {
   const logout = async () => {
     const url = import.meta.env.VITE_API + "user/logout";
     const successful = await postRequest(url, cookies.session);
-    removeCookie("session");
     if (successful) {
-      window.location.reload();
+      removeCookie("session", { path: "/" });
     }
   };
 
