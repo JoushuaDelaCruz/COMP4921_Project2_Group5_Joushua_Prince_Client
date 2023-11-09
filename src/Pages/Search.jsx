@@ -8,6 +8,22 @@ const Search = () => {
   const { text } = useParams();
   const textResults = useLoaderData();
   const [user, profileImg] = useUser(null);
+//   const [parentID, setParentID] = useState(null);
+
+//  const fetchParentId = async (content_id) => {
+//     try {
+//       const response = await fetch(`/api/search/${content_id}`);
+//       if (response.ok) {
+//         const data = await response.json();
+//         setParentID(data.parent_id);
+//       } else {
+//         console.error("API request failed");
+//       }
+//     } catch (error) {
+//       console.error("Error fetching parent ID:", error);
+//     }
+//   };
+
 
   return (
     <>
@@ -16,7 +32,11 @@ const Search = () => {
         <section className="flex flex-col w-1/2 h-fit">
           {textResults &&
             textResults.map((content) => {
-              return <SearchCard content={content} key={content.content_id} />;
+              return (
+                <a href={`/reply/${content.parent_id}`} key={content.parent_id}>
+                  <SearchCard content={content} />
+                </a>
+              );
             })}
         </section>
       </main>
@@ -25,3 +45,4 @@ const Search = () => {
 };
 
 export default Search;
+
