@@ -23,3 +23,4 @@ Official Link: https://project2-chatbook.netlify.app/
 * Incorrect credential when logging in leads to 404 page
 * Refactor useRequest
 * Make the website responsive
+* Refactor the Tailwind CSS to SCSS/CSS external files
