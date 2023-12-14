@@ -10,5 +10,16 @@ Official Link: https://project2-chatbook.netlify.app/
 * Tailwind CSS
 
 ## Key Features:
-* Dynamic post and reply system
-* Word search system
+* Post and replies
+* Text search system
+* Voting System
+* Post/Replies delete system
+* Post/Replies editing system
+* User profile
+* Bookmark system
+* Post/Replies date system - the date the post/reply was created is shown from how long it was created from today, e.g. "two weeks ago", etc.
+
+### Future Development Notes
+* Incorrect credential when logging in leads to 404 page
+* Refactor useRequest
+* Make the website responsive
